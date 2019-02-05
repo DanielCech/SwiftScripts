@@ -17,10 +17,6 @@ let package = Package(
         .target(
             name: "SwiftScripts",
             path: "Sources"
-        ),
-        .testTarget(
-            name: "SwiftScriptsTests",
-            dependencies: ["SwiftScripts"]
         )
     ]
 )
