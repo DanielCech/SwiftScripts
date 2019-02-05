@@ -35,5 +35,9 @@ import Foundation
  *  To open other files & folders, use the `File` and `Folder` class respectively.
  */
 public class ScriptHelper {
-  var index: Int
+  var index: Int = 1
+
+    init() {
+        print("jo")
+    }
 }
