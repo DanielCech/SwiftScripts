@@ -1,22 +1,28 @@
-// swift-tools-version:4.0
-
-/**
- *  SwiftScripts
- *  Copyright (c) Daniel Cech 2019
- *  Licensed under the MIT license. See LICENSE file.
- */
+// swift-tools-version:4.2
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "SwiftScripts",
     products: [
-        .library(name: "SwiftScripts", targets: ["SwiftScripts"])
+        // Products define the executables and libraries produced by a package, and make them visible to other packages.
+        .library(
+            name: "SwiftScripts",
+            targets: ["SwiftScripts"]),
+    ],
+    dependencies: [
+        // Dependencies declare other packages that this package depends on.
+        // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
+        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "SwiftScripts",
-            path: "Sources"
-        )
+            dependencies: []),
+        .testTarget(
+            name: "SwiftScriptsTests",
+            dependencies: ["SwiftScripts"]),
     ]
 )
