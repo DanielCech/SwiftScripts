@@ -1,19 +1,28 @@
 import Foundation
 import Files
+import Moderator
+import ScriptToolkit
 
-let inputFolder = try Folder.current.subfolder(named: "Root")
-let inputFolderPath = inputFolder.path
-let index = inputFolderPath.index(inputFolderPath.startIndex, offsetBy: inputFolderPath.count)
+let moderator = Moderator(description: "Flatten directory structure and make long file names.")
+let inputDir = moderator.add(Argument<String?>
+    .optionWithValue("input", name: "Input directory", description: "Input directory for processing"))
+let outputDir = moderator.add(Argument<String?>
+    .optionWithValue("output", name: "Output directory", description: "Output directory for result"))
 
-
-let outputFolder = try Folder(path: "/Users/dan/Documents/Output")
-
-try inputFolder.makeSubfolderSequence(recursive: true).forEach { folder in
-    let folderPath = folder.path[index...]
-    let folderPrefix = folderPath.replacingOccurrences(of: "/", with: " ")
-
-    for file in folder.files {
-        try file.rename(to: folderPrefix + " " + file.name, keepExtension: true)
-        try file.move(to: outputFolder)
+do {
+    try moderator.parse()
+    if let inputFolder = inputDir.value, let outputFolder = outputDir.value {
+        try flattenFolderStructure(inputDir: inputFolder, outputDir: outputFolder)
     }
+    else {
+        print(moderator.usagetext)
+    }
+}
+catch let error as ArgumentError {
+    print(error.errormessage)
+    exit(Int32(error._code))
+}
+catch {
+    print("flatten failed: \(error.localizedDescription)")
+    exit(1)
 }
