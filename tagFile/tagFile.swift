@@ -9,7 +9,7 @@ let onCopy = moderator.add(.option("c","copy", description: "Tags copy of the fi
 let filesAndDirs = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
 
 do {
-    try moderator.parse(["-c","/Users/dan/Documents/[Development]/[Projects]/SwiftScripts/tagFile/Groove.m4v"])
+    try moderator.parse()
     if filesAndDirs.value.isEmpty {
         print(moderator.usagetext)
     }
