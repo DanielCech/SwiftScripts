@@ -1,3 +1,5 @@
+#!/usr/local/bin/marathon run
+
 import Foundation
 import Files
 import SwiftShell
