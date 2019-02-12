@@ -7,16 +7,6 @@ import ScriptToolkit
 import SwiftShell
 import FileSmith
 
-public func removeEmptyDirectories(in folder: Folder) throws {
-    for subfolder in folder.subfolders {
-        try removeEmptyDirectories(in: subfolder)
-    }
-
-    if folder.subfolders.count == 0 && folder.files.count == 0 {
-        print("removed: \(folder.path)")
-        try folder.delete()
-    }
-}
 
 let moderator = Moderator(description: "Removes empty dirs in directory and its subdirectories")
 let inputDir = moderator.add(Argument<String?>
@@ -26,7 +16,7 @@ do {
     try moderator.parse()
     if let inputFolder = inputDir.value {
         let folder = try Folder(path: inputFolder)
-        
+
         print("⚙️ Processing")
         try removeEmptyDirectories(in: folder)
         print("✅ Done")
