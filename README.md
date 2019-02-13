@@ -1,3 +1,3 @@
 # SwiftScripts
 
-A description of this package.
+Set of macOS shell scripts written in Swift. Scripts can help with simple repeptitive tasks mainly in iOS development.
