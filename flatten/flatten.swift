@@ -11,7 +11,7 @@ let outputDir = moderator.add(Argument<String?>
     .optionWithValue("output", name: "Output directory", description: "Output directory for result"))
 
 do {
-    try moderator.parse(["--input", "/Users/dan/Documents/Test", "--output", "/Users/dan/Documents/Tuhle"])
+    try moderator.parse()
     if let inputFolder = inputDir.value, let outputFolder = outputDir.value {
         try flattenFolderStructure(inputDir: inputFolder, outputDir: outputFolder, move: move.value)
     }
