@@ -17,7 +17,8 @@ do {
     }
     else {
         for item in filesAndDirs.value {
-            try tag(item, copy: onCopy.value)
+            let fileSystemItem = try FileSystem.Item(path: item)
+            try fileSystemItem.tag(copy: onCopy.value)
         }
     }
 

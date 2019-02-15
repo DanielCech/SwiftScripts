@@ -48,7 +48,7 @@ do {
         try FileSystem().createFolderIfNeeded(at: outputDir.value)
 
         for item in files.value {
-            try resizeAt123x(File(path: item), width: width, height: height, outputDir: Folder(path:outputDir.value))
+            try File(path: item).resizeAt123x(width: width, height: height, outputDir: Folder(path: outputDir.value))
         }
 
         print("✅ Done")

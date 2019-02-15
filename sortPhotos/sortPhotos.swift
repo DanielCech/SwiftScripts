@@ -16,12 +16,15 @@ let inputDir = moderator.add(Argument<String?>
 
 do {
     try moderator.parse()
-    if let inputFolder = inputDir.value {
-        Directory.current = try Directory(open: inputFolder)
+    if let unwrappedInputDir = inputDir.value {
+        Directory.current = try Directory(open: unwrappedInputDir)
+
+        let inputFolder = try Folder(path: unwrappedInputDir)
+
         if !noExif.value {
-            try exifTool(inputDir: inputFolder, byCameraModel: byCameraModel.value, processM4V: processM4V.value)
+            try inputFolder.exifTool(byCameraModel: byCameraModel.value, processM4V: processM4V.value)
         }
-        try organizePhotos(inputDir: inputFolder)
+        try inputFolder.organizePhotos()
     }
     else {
         print(moderator.usagetext)
