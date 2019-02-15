@@ -13,7 +13,9 @@ let outputDir = moderator.add(Argument<String?>
 do {
     try moderator.parse()
     if let inputFolder = inputDir.value, let outputFolder = outputDir.value {
+        print("⌚️ Processing")
         try flattenFolderStructure(inputDir: inputFolder, outputDir: outputFolder, move: move.value)
+        print("✅ Done")
     }
     else {
         print(moderator.usagetext)

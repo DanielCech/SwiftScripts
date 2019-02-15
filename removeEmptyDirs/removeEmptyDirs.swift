@@ -17,7 +17,7 @@ do {
     if let inputFolder = inputDir.value {
         let folder = try Folder(path: inputFolder)
 
-        print("⚙️ Processing")
+        print("⌚️ Processing")
         try removeEmptyDirectories(in: folder)
         print("✅ Done")
     }

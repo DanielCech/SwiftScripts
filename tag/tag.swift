@@ -6,7 +6,7 @@ import SwiftShell
 import Moderator
 import ScriptToolkit
 
-let moderator = Moderator(description: "Tag file with timestamp (YYYY-MM-DDc)")
+let moderator = Moderator(description: "Tag file or directory with timestamp (YYYY-MM-DDc)")
 let onCopy = moderator.add(.option("c","copy", description: "Tags copy of the file"))
 let filesAndDirs = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
 
@@ -28,6 +28,6 @@ catch let error as ArgumentError {
     exit(Int32(error._code))
 }
 catch {
-    print("tagFile failed: \(error.localizedDescription)")
+    print("tag failed: \(error.localizedDescription)")
     exit(1)
 }

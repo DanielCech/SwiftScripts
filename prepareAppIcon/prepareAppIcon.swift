@@ -6,11 +6,6 @@ import SwiftShell
 import Moderator
 import ScriptToolkit
 
-public func resizeImage(original: String, newName: String, size: CGSize) {
-    run("/usr/local/bin/convert", original, "-resize", "\(size.width)x\(size.height)",newName)
-}
-
-
 let moderator = Moderator(description: "Prepare all required resolutions of iOS app icon")
 let inFile = moderator.add(Argument<String?>.singleArgument(name: "input"))
 
