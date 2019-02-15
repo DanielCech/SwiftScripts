@@ -12,9 +12,10 @@ let outputDir = moderator.add(Argument<String?>
 
 do {
     try moderator.parse()
-    if let inputFolder = inputDir.value, let outputFolder = outputDir.value {
+    if let unwrappedInputDir = inputDir.value, let unwrappedOutputDir = outputDir.value {
         print("⌚️ Processing")
-        try flattenFolderStructure(inputDir: inputFolder, outputDir: outputFolder, move: move.value)
+        let inputFolder = try Folder(path: unwrappedInputDir)
+        try inputFolder.flattenFolderStructure(outputDir: unwrappedOutputDir, move: move.value)
         print("✅ Done")
     }
     else {
