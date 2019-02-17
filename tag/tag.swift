@@ -12,17 +12,15 @@ let filesAndDirs = moderator.add(Argument<String?>.singleArgument(name: "multipl
 
 do {
     try moderator.parse()
-    if filesAndDirs.value.isEmpty {
+    guard !filesAndDirs.value.isEmpty else {
         print(moderator.usagetext)
-    }
-    else {
-        for item in filesAndDirs.value {
-            let fileSystemItem = try FileSystem.Item(path: item)
-            try fileSystemItem.tag(copy: onCopy.value)
-        }
+        exit(0)
     }
 
-
+    for item in filesAndDirs.value {
+        let fileSystemItem = try FileSystem.Item(path: item)
+        try fileSystemItem.tag(copy: onCopy.value)
+    }
 }
 catch let error as ArgumentError {
     print(error.errormessage)

@@ -14,16 +14,16 @@ let inputDir = moderator.add(Argument<String?>
 
 do {
     try moderator.parse()
-    if let inputFolder = inputDir.value {
-        let folder = try Folder(path: inputFolder)
-
-        print("⌚️ Processing")
-        try folder.removeEmptyDirectories()
-        print("✅ Done")
-    }
-    else {
+    guard let inputFolder = inputDir.value else {
         print(moderator.usagetext)
+        exit(0)
     }
+
+    let folder = try Folder(path: inputFolder)
+
+    print("⌚️ Processing")
+    try folder.removeEmptyDirectories()
+    print("✅ Done")
 }
 catch let error as ArgumentError {
     main.stderror.print(error.errormessage)

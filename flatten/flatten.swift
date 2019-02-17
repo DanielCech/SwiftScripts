@@ -12,15 +12,15 @@ let outputDir = moderator.add(Argument<String?>
 
 do {
     try moderator.parse()
-    if let unwrappedInputDir = inputDir.value, let unwrappedOutputDir = outputDir.value {
-        print("⌚️ Processing")
-        let inputFolder = try Folder(path: unwrappedInputDir)
-        try inputFolder.flattenFolderStructure(outputDir: unwrappedOutputDir, move: move.value)
-        print("✅ Done")
-    }
-    else {
+    guard let unwrappedInputDir = inputDir.value, let unwrappedOutputDir = outputDir.value else {
         print(moderator.usagetext)
+        exit(0)
     }
+    
+    print("⌚️ Processing")
+    let inputFolder = try Folder(path: unwrappedInputDir)
+    try inputFolder.flattenFolderStructure(outputDir: unwrappedOutputDir, move: move.value)
+    print("✅ Done")
 }
 catch let error as ArgumentError {
     print(error.errormessage)

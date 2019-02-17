@@ -25,37 +25,36 @@ let files = moderator.add(Argument<String?>.singleArgument(name: "multiple").rep
 do {
     try moderator.parse()
 
-    if !files.value.isEmpty {
-
-        print("⌚️ Processing")
-
-        if interactive.value {
-            try askForMissingParams([(sizeArgument, size)])
-        }
-
-        guard let unwrappedSize = size.value else {
-            print(moderator.usagetext)
-            exit(0)
-        }
-
-        let dimensions = unwrappedSize.trimmingCharacters(in: [" "]).split(separator: "x")
-        if dimensions.count != 2 {
-            throw ArgumentError(errormessage: "Invalid size argument")
-        }
-
-        guard let width = Int(dimensions[0]), let height = Int(dimensions[1]) else { throw ArgumentError(errormessage: "Invalid size argument") }
-
-        try FileSystem().createFolderIfNeeded(at: outputDir.value)
-
-        for item in files.value {
-            try File(path: item).resizeAt123x(width: width, height: height, outputDir: Folder(path: outputDir.value))
-        }
-
-        print("✅ Done")
-    }
-    else {
+    guard !files.value.isEmpty else {
         print(moderator.usagetext)
+        exit(0)
     }
+
+    print("⌚️ Processing")
+
+    if interactive.value {
+        try askForMissingParams([(sizeArgument, size)])
+    }
+
+    guard let unwrappedSize = size.value else {
+        print(moderator.usagetext)
+        exit(0)
+    }
+
+    let dimensions = unwrappedSize.trimmingCharacters(in: [" "]).split(separator: "x")
+    if dimensions.count != 2 {
+        throw ArgumentError(errormessage: "Invalid size argument")
+    }
+
+    guard let width = Int(dimensions[0]), let height = Int(dimensions[1]) else { throw ArgumentError(errormessage: "Invalid size argument") }
+
+    try FileSystem().createFolderIfNeeded(at: outputDir.value)
+
+    for item in files.value {
+        try File(path: item).resizeAt123x(width: width, height: height, outputDir: Folder(path: outputDir.value))
+    }
+
+    print("✅ Done")
 }
 catch let error as ArgumentError {
     main.stderror.print(error.errormessage)

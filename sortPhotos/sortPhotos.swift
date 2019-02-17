@@ -16,19 +16,19 @@ let inputDir = moderator.add(Argument<String?>
 
 do {
     try moderator.parse()
-    if let unwrappedInputDir = inputDir.value {
-        Directory.current = try Directory(open: unwrappedInputDir)
-
-        let inputFolder = try Folder(path: unwrappedInputDir)
-
-        if !noExif.value {
-            try inputFolder.exifTool(byCameraModel: byCameraModel.value, processM4V: processM4V.value)
-        }
-        try inputFolder.organizePhotos()
-    }
-    else {
+    guard let unwrappedInputDir = inputDir.value else {
         print(moderator.usagetext)
+        exit(0)
     }
+
+    Directory.current = try Directory(open: unwrappedInputDir)
+
+    let inputFolder = try Folder(path: unwrappedInputDir)
+
+    if !noExif.value {
+        try inputFolder.exifTool(byCameraModel: byCameraModel.value, processM4V: processM4V.value)
+    }
+    try inputFolder.organizePhotos()
 }
 catch let error as ArgumentError {
     main.stderror.print(error.errormessage)
