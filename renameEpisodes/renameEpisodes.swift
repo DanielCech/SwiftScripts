@@ -5,89 +5,6 @@ import ScriptToolkit
 import Alamofire
 
 
-//
-//  String+Substrings.swift
-//  Brix
-//
-//  Created by Dan Cech on 08.11.2018.
-//  Copyright © 2018 STRV. All rights reserved.
-//
-
-import Foundation
-
-extension String {
-    subscript(value: NSRange) -> Substring {
-        return self[value.lowerBound ..< value.upperBound]
-    }
-}
-
-// MARK: - Subscripts
-
-extension String {
-    subscript(value: CountableClosedRange<Int>) -> Substring {
-        return self[index(at: value.lowerBound) ... index(at: value.upperBound)]
-    }
-
-    subscript(value: CountableRange<Int>) -> Substring {
-        return self[index(at: value.lowerBound) ..< index(at: value.upperBound)]
-    }
-
-    subscript(value: PartialRangeUpTo<Int>) -> Substring {
-        return self[..<index(at: value.upperBound)]
-    }
-
-    subscript(value: PartialRangeThrough<Int>) -> Substring {
-        return self[...index(at: value.upperBound)]
-    }
-
-    subscript(value: PartialRangeFrom<Int>) -> Substring {
-        return self[index(at: value.lowerBound)...]
-    }
-
-    func index(at offset: Int) -> String.Index {
-        return index(startIndex, offsetBy: offset)
-    }
-}
-
-// MARK: - Safe subscripts
-
-extension String {
-    subscript(safe value: CountableClosedRange<Int>) -> Substring {
-        let lowerBound = max(value.lowerBound, 0)
-        let upperBound = min(value.upperBound, max(count - 1, 0))
-        return self[index(at: lowerBound) ... index(at: upperBound)]
-    }
-
-    subscript(safe value: CountableRange<Int>) -> Substring {
-        let lowerBound = max(value.lowerBound, 0)
-        let upperBound = min(value.upperBound, max(count, 0))
-        return self[index(at: lowerBound) ..< index(at: upperBound)]
-    }
-
-    subscript(safe value: PartialRangeUpTo<Int>) -> Substring {
-        let upperBound = min(value.upperBound, max(count, 0))
-        return self[..<index(at: upperBound)]
-    }
-
-    subscript(safe value: PartialRangeThrough<Int>) -> Substring {
-        let upperBound: Int
-        if value.upperBound >= 0 {
-            upperBound = min(value.upperBound, max(count - 1, 0))
-        }
-        else {
-            upperBound = max(0, count - 1 + value.upperBound)
-        }
-
-        return self[...index(at: upperBound)]
-    }
-
-    subscript(safe value: PartialRangeFrom<Int>) -> Substring {
-        let lowerBound = max(value.lowerBound, 0)
-        return self[index(at: lowerBound)...]
-    }
-}
-
-
 struct Season: Decodable {
     var episodes: [Episode]
     var season: Int
@@ -141,24 +58,8 @@ struct Episode: Decodable {
     }
 }
 
-func matches(for regex: String, in text: String) -> [String] {
-    do {
-        let regex = try NSRegularExpression(pattern: regex)
-        let results = regex.matches(in: text,
-                                    range: NSRange(text.startIndex..., in: text))
-        return results.map {
-            String(text[Range($0.range, in: text)!])
-        }
-    } catch let error {
-        print("invalid regex: \(error.localizedDescription)")
-        return []
-    }
-}
-
-var seriesInfo = [Int: Season]()
-
 extension File {
-    func renameEpisode(season: String?, episode: String?) -> Bool {
+    func renameEpisode(season: String?, episode: String?, renameFiles: Bool) throws -> Bool {
         guard
             let unwrappedSeason = season,
             let seasonInt = Int(unwrappedSeason),
@@ -173,11 +74,16 @@ extension File {
         let episodeName = season.episodes[episodeInt - 1].title
         let newName = String(format: "S%02dE%02d %@.%@", seasonInt, episodeInt, episodeName, self.extension ?? "")
         print("  -> \(newName)")
+
+        if renameFiles {
+            try rename(to: newName)
+        }
+
         return true
     }
 }
 
-func performRenames(inputDir: String) throws {
+func performRenames(inputDir: String, renameFiles: Bool) throws {
     let inputFolder = try Folder(path: inputDir)
 
     for file in inputFolder.files {
@@ -187,7 +93,7 @@ func performRenames(inputDir: String) throws {
         if let descriptor = matches(for: "[sS]\\d\\d[eE]\\d\\d", in: fileName).first {
             let seasonNumber = String(descriptor[1...2])
             let episodeNumber = String(descriptor[4...5])
-            if file.renameEpisode(season: seasonNumber, episode: episodeNumber) {
+            if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
@@ -195,7 +101,7 @@ func performRenames(inputDir: String) throws {
         if let descriptor = matches(for: "[sS]\\d[eE]\\d\\d", in: fileName).first {
             let seasonNumber = String(descriptor[1...1])
             let episodeNumber = String(descriptor[3...4])
-            if file.renameEpisode(season: seasonNumber, episode: episodeNumber) {
+            if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
@@ -203,7 +109,7 @@ func performRenames(inputDir: String) throws {
         if let descriptor = matches(for: "[sS]\\d[eE]\\d", in: fileName).first {
             let seasonNumber = String(descriptor[1...1])
             let episodeNumber = String(descriptor[3...3])
-            if file.renameEpisode(season: seasonNumber, episode: episodeNumber) {
+            if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
@@ -211,7 +117,7 @@ func performRenames(inputDir: String) throws {
         if let descriptor = matches(for: "\\d\\d[xX]\\d\\d", in: fileName).first {
             let seasonNumber = String(descriptor[0...1])
             let episodeNumber = String(descriptor[3...4])
-            if file.renameEpisode(season: seasonNumber, episode: episodeNumber) {
+            if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
@@ -220,7 +126,7 @@ func performRenames(inputDir: String) throws {
     }
 }
 
-func renameSeries(name seriesName: String, season: Int, inputDir: String) {
+func renameSeries(name seriesName: String, season: Int, inputDir: String, renameFiles: Bool) {
     print("🔦 Downloading info about season \(season)")
 
     let url = "http://www.omdbapi.com/?apikey=d1b21f08&type=series&t=\(seriesName)&Season=\(season)"
@@ -230,22 +136,30 @@ func renameSeries(name seriesName: String, season: Int, inputDir: String) {
             let seasonInfo = try! JSONDecoder().decode(Season.self, from: data)
 
             seriesInfo[season] = seasonInfo
-            try? performRenames(inputDir: inputDir)
+            try? performRenames(inputDir: inputDir, renameFiles: renameFiles)
 
             if season < seasonInfo.totalSeasons {
-                renameSeries(name: seriesName, season: season + 1, inputDir: inputDir)
+                renameSeries(name: seriesName, season: season + 1, inputDir: inputDir, renameFiles: renameFiles)
+            }
+            else {
+                print("✅ Done")
+                exit(0)
             }
         }
     }
 }
 
-let moderator = Moderator(description: "Rename seriers episodes using names from OMDb. Script will ask for confirmation.")
+var seriesInfo = [Int: Season]()
+
+let moderator = Moderator(description: "Rename seriers episodes using names from OMDb.")
 
 let inputDir = moderator.add(Argument<String?>
     .optionWithValue("input", name: "Input directory", description: "Input directory for processing"))
 
 let name = moderator.add(Argument<String?>
     .optionWithValue("series", name: "Name of series", description: "Try http://www.omdbapi.com first if needed."))
+
+let rename = moderator.add(.option("r","rename", description: "Perform renames of files. Otherwise result is just preview of changes"))
 
 do {
     try moderator.parse(["--input", "/Volumes/HAL9000/[Movies]/[Altered Carbon]", "--series", "Altered Carbon"])
@@ -258,9 +172,9 @@ do {
 
     let seriesName = unwrappedName.replacingOccurrences(of: " ", with: "+")
 
-    renameSeries(name: seriesName, season: 1, inputDir: unwrappedInputDir)
+    renameSeries(name: seriesName, season: 1, inputDir: unwrappedInputDir, renameFiles: rename.value)
 
-    RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
+    RunLoop.main.run(until: Date(timeIntervalSinceNow: 20))
 
     print("✅ Done")
 }
