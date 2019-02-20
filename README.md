@@ -2,6 +2,8 @@
 
 Set of macOS shell scripts written in Swift. Scripts can help with simple repeptitive tasks mainly in iOS development.
 
+### General Purpose Scripts
+
 #### tag
 ```
 Tag file or directory with timestamp (YYYY-MM-DDc) based on last modification date
@@ -48,3 +50,7 @@ Usage: sortPhotos
   --input <Input directory>:
       Input directory for processing
 ```
+
+### iOS Development
+
+### Practise the Music Instrument
