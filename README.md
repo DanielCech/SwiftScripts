@@ -2,9 +2,13 @@
 
 Set of macOS shell scripts written in Swift. Scripts can help with simple repeptitive tasks mainly in iOS development.
 
-### General Purpose Scripts
+## General Purpose Scripts
 
-#### tag
+### tag
+<p align="center">
+    <img src="https://i.ibb.co/Mh479Pz/Tag.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+
 ```
 Tag file or directory with timestamp (YYYY-MM-DDc) based on last modification date
 
