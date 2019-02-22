@@ -4,7 +4,7 @@ Set of macOS shell scripts written in Swift. Scripts can help with simple repept
 
 ## General Purpose Scripts
 
-### tag
+### $ tag README.md
 <p align="center">
     <img src="https://i.ibb.co/Mh479Pz/Tag.png" width="480" max-width="90%" alt="Marathon" />
 </p>
@@ -19,7 +19,7 @@ Usage: tag
 
 -----------------------------------------------------------
 
-### flatten
+### $ flatten -m --input ~/Dir1 --output ~/Dir2
 <p align="center">
     <img src="https://i.ibb.co/LvcH7Zk/Flatten.png" width="480" max-width="90%" alt="Marathon" />
 </p>
@@ -38,7 +38,7 @@ Usage: flatten
 
 -----------------------------------------------------------
 
-### removeEmptyDirs
+### $ removeEmptyDirs --input ~/Dir
 ```
 Removes empty dirs in directory and its subdirectories
 
@@ -78,6 +78,7 @@ Usage: sortPhotos
 <p align="center">
     <img src="https://i.ibb.co/MC5MDM6/Prepare-App-Icon.png" width="480" max-width="90%" alt="Marathon" />
 </p>
+
 ```
 Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
 
