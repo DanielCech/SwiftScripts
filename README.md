@@ -17,6 +17,8 @@ Usage: tag
       Tags copy of the file
 ```
 
+-----------------------------------------------------------
+
 ### flatten
 <p align="center">
     <img src="https://i.ibb.co/LvcH7Zk/Flatten.png" width="480" max-width="90%" alt="Marathon" />
@@ -34,6 +36,8 @@ Usage: flatten
       Output directory for result
 ```
 
+-----------------------------------------------------------
+
 ### removeEmptyDirs
 ```
 Removes empty dirs in directory and its subdirectories
@@ -43,6 +47,8 @@ Usage: removeEmptyDirs
       Input directory for processing
 
 ```
+
+-----------------------------------------------------------
 
 ### sortPhotos
 ```
@@ -58,6 +64,8 @@ Usage: sortPhotos
   --input <Input directory>:
       Input directory for processing
 ```
+
+-----------------------------------------------------------
 
 ### renameEpisodes
 <p align="center">
@@ -83,6 +91,8 @@ Usage: sortPhotos
   --input <Input directory>:
       Input directory for processing
 ```
+
+-----------------------------------------------------------
 
 ### resize
 ```
