@@ -4,8 +4,9 @@ Set of macOS shell scripts written in Swift. Scripts can help with simple repept
 
 ## General Purpose Scripts
 
-### `$ tag README.md`
+### tag
 <p align="center">
+    `$ tag README.md`
     <img src="https://i.ibb.co/Mh479Pz/Tag.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
