@@ -17,7 +17,7 @@ Usage: tag
       Tags copy of the file
 ```
 
-#### flatten
+### flatten
 <p align="center">
     <img src="https://i.ibb.co/LvcH7Zk/Flatten.png" width="480" max-width="90%" alt="Marathon" />
 </p>
@@ -34,7 +34,7 @@ Usage: flatten
       Output directory for result
 ```
 
-#### removeEmptyDirs
+### removeEmptyDirs
 ```
 Removes empty dirs in directory and its subdirectories
 
@@ -44,7 +44,7 @@ Usage: removeEmptyDirs
 
 ```
 
-#### sortPhotos
+### sortPhotos
 ```
 Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
 
@@ -59,14 +59,14 @@ Usage: sortPhotos
       Input directory for processing
 ```
 
-#### renameEpisodes
+### renameEpisodes
 <p align="center">
     <img src="https://i.ibb.co/BcbB2nF/Rename-Episodes.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
-### iOS Development
+## iOS Development
 
-#### prepareAppIcon
+### prepareAppIcon
 <p align="center">
     <img src="https://i.ibb.co/MC5MDM6/Prepare-App-Icon.png" width="480" max-width="90%" alt="Marathon" />
 </p>
@@ -84,7 +84,7 @@ Usage: sortPhotos
       Input directory for processing
 ```
 
-#### resize
+### resize
 ```
 Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
 
@@ -99,4 +99,4 @@ Usage: sortPhotos
       Input directory for processing
 ```
 
-### Practise the Music Instrument
+## Practise the Music Instrument
