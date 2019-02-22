@@ -12,13 +12,9 @@ Set of macOS shell scripts written in Swift. Scripts can help with simple repept
 ```
 Tag file or directory with timestamp (YYYY-MM-DDc) based on last modification date
 
-Usage: tag
+Usage: tag <params> <file or dir>
   -c,--copy:
       Tags copy of the file
-```
-
-```
-Example: $ tag README.md
 ```
 
 -----------------------------------------------------------
@@ -31,7 +27,7 @@ Example: $ tag README.md
 ```
 Flatten directory structure and make long file names.
 
-Usage: flatten
+Usage: flatten <params>
   -m,--move:
       Move files from source folder
   --input <Input directory>:
@@ -40,17 +36,13 @@ Usage: flatten
       Output directory for result
 ```
 
-```
-Example: `$ flatten -m --input ~/Dir1 --output ~/Dir2
-```
-
 -----------------------------------------------------------
 
 ### removeEmptyDirs
 ```
 Removes empty dirs in directory and its subdirectories
 
-Usage: removeEmptyDirs
+Usage: removeEmptyDirs <params>
   --input <Input directory>:
       Input directory for processing
 
@@ -62,7 +54,7 @@ Usage: removeEmptyDirs
 ```
 Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
 
-Usage: sortPhotos
+Usage: sortPhotos <params>
   -n,--noexif:
       Do not use exiftool. Just organize files to existing folders.
   -c,--camera:
@@ -90,7 +82,7 @@ Usage: sortPhotos
 ```
 Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
 
-Usage: sortPhotos
+Usage: sortPhotos <params>
   -n,--noexif:
       Do not use exiftool. Just organize files to existing folders.
   -c,--camera:
@@ -107,7 +99,7 @@ Usage: sortPhotos
 ```
 Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
 
-Usage: sortPhotos
+Usage: sortPhotos <params> <files>
   -n,--noexif:
       Do not use exiftool. Just organize files to existing folders.
   -c,--camera:
