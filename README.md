@@ -4,7 +4,7 @@ Set of macOS shell scripts written in Swift. Scripts can help with simple repept
 
 ## General Purpose Scripts
 
-### $ tag README.md
+### `$ tag README.md`
 <p align="center">
     <img src="https://i.ibb.co/Mh479Pz/Tag.png" width="480" max-width="90%" alt="Marathon" />
 </p>
@@ -19,7 +19,7 @@ Usage: tag
 
 -----------------------------------------------------------
 
-### $ flatten -m --input ~/Dir1 --output ~/Dir2
+### `$ flatten -m --input ~/Dir1 --output ~/Dir2`
 <p align="center">
     <img src="https://i.ibb.co/LvcH7Zk/Flatten.png" width="480" max-width="90%" alt="Marathon" />
 </p>
