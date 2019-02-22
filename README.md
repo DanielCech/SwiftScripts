@@ -18,6 +18,10 @@ Usage: tag
 ```
 
 #### flatten
+<p align="center">
+    <img src="https://i.ibb.co/LvcH7Zk/Flatten.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+
 ```
 Flatten directory structure and make long file names.
 
@@ -55,6 +59,44 @@ Usage: sortPhotos
       Input directory for processing
 ```
 
+#### renameEpisodes
+<p align="center">
+    <img src="https://i.ibb.co/BcbB2nF/Rename-Episodes.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+
 ### iOS Development
+
+#### prepareAppIcon
+<p align="center">
+    <img src="https://i.ibb.co/MC5MDM6/Prepare-App-Icon.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+```
+Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
+
+Usage: sortPhotos
+  -n,--noexif:
+      Do not use exiftool. Just organize files to existing folders.
+  -c,--camera:
+      Sort by camera model
+  -m,--m4v:
+      Sort M4V by name
+  --input <Input directory>:
+      Input directory for processing
+```
+
+#### resize
+```
+Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
+
+Usage: sortPhotos
+  -n,--noexif:
+      Do not use exiftool. Just organize files to existing folders.
+  -c,--camera:
+      Sort by camera model
+  -m,--m4v:
+      Sort M4V by name
+  --input <Input directory>:
+      Input directory for processing
+```
 
 ### Practise the Music Instrument
