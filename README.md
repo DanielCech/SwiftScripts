@@ -1,7 +1,7 @@
 # SwiftScripts
 
 Set of macOS shell scripts written in Swift. Scripts can help with simple repeptitive tasks mainly in iOS development.
-Please install these free tools for proper use of scripts:
+Please install these free tools first. Scripts rely on them:
 * Image Magick - https://www.imagemagick.org
 * EXIFtool - https://www.sno.phy.queensu.ca/~phil/exiftool/
 
