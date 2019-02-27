@@ -2,20 +2,32 @@
 
 Set of macOS shell scripts written in Swift. Scripts can help with simple repeptitive tasks mainly in iOS development.
 
-#### tag
+## General Purpose Scripts
+
+### tag
+<p align="center">
+    <img src="https://i.ibb.co/Mh479Pz/Tag.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+
 ```
 Tag file or directory with timestamp (YYYY-MM-DDc) based on last modification date
 
-Usage: tag
+Usage: tag <params> <file or dir>
   -c,--copy:
       Tags copy of the file
 ```
 
-#### flatten
+-----------------------------------------------------------
+
+### flatten
+<p align="center">
+    <img src="https://i.ibb.co/LvcH7Zk/Flatten.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+
 ```
 Flatten directory structure and make long file names.
 
-Usage: flatten
+Usage: flatten <params>
   -m,--move:
       Move files from source folder
   --input <Input directory>:
@@ -24,21 +36,25 @@ Usage: flatten
       Output directory for result
 ```
 
-#### removeEmptyDirs
+-----------------------------------------------------------
+
+### removeEmptyDirs
 ```
 Removes empty dirs in directory and its subdirectories
 
-Usage: removeEmptyDirs
+Usage: removeEmptyDirs <params>
   --input <Input directory>:
       Input directory for processing
 
 ```
 
-#### sortPhotos
+-----------------------------------------------------------
+
+### sortPhotos
 ```
 Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
 
-Usage: sortPhotos
+Usage: sortPhotos <params>
   -n,--noexif:
       Do not use exiftool. Just organize files to existing folders.
   -c,--camera:
@@ -48,3 +64,50 @@ Usage: sortPhotos
   --input <Input directory>:
       Input directory for processing
 ```
+
+-----------------------------------------------------------
+
+### renameEpisodes
+<p align="center">
+    <img src="https://i.ibb.co/BcbB2nF/Rename-Episodes.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+
+## iOS Development
+
+### prepareAppIcon
+<p align="center">
+    <img src="https://i.ibb.co/MC5MDM6/Prepare-App-Icon.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+
+```
+Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
+
+Usage: sortPhotos <params>
+  -n,--noexif:
+      Do not use exiftool. Just organize files to existing folders.
+  -c,--camera:
+      Sort by camera model
+  -m,--m4v:
+      Sort M4V by name
+  --input <Input directory>:
+      Input directory for processing
+```
+
+-----------------------------------------------------------
+
+### resize
+```
+Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
+
+Usage: sortPhotos <params> <files>
+  -n,--noexif:
+      Do not use exiftool. Just organize files to existing folders.
+  -c,--camera:
+      Sort by camera model
+  -m,--m4v:
+      Sort M4V by name
+  --input <Input directory>:
+      Input directory for processing
+```
+
+## Practise the Music Instrument
