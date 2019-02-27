@@ -23,10 +23,10 @@ do {
     print("✅ Done")
 }
 catch let error as ArgumentError {
-    print(error.errormessage)
+    print("💥 flatten failed: \(error.errormessage)")
     exit(Int32(error._code))
 }
 catch {
-    print("flatten failed: \(error.localizedDescription)")
+    print("💥 flatten failed: \(error.localizedDescription)")
     exit(1)
 }

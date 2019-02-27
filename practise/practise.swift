@@ -7,8 +7,6 @@ import ScriptToolkit
 import SwiftShell
 
 
-
-
 let moderator = Moderator(description: "Prepare song for practising - Add 5s silence at the beginning and set tempo to 75%, 90%, 100%")
 
 let outputDirArgument = Argument<String?>
@@ -17,7 +15,6 @@ let outputDirArgument = Argument<String?>
 let outputDir = moderator.add(outputDirArgument)
 
 let files = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
-
 
 
 do {
@@ -81,10 +78,10 @@ do {
     print("✅ Done")
 }
 catch let error as ArgumentError {
-    main.stderror.print(error.errormessage)
+    print("💥 practise failed: \(error.errormessage)")
     exit(Int32(error._code))
 }
 catch {
-    main.stderror.print("practise failed: \(error.localizedDescription)")
+    print("💥 practise failed: \(error.localizedDescription)")
     exit(1)
 }

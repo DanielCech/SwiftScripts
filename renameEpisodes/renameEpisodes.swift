@@ -122,6 +122,22 @@ func performRenames(inputDir: String, renameFiles: Bool) throws {
             }
         }
 
+        if let descriptor = matches(for: "\\d[xX]\\d\\d", in: fileName).first {
+            let seasonNumber = String(descriptor[0...0])
+            let episodeNumber = String(descriptor[2...3])
+            if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
+                continue
+            }
+        }
+
+        if let descriptor = matches(for: "\\d[xX]\\d", in: fileName).first {
+            let seasonNumber = String(descriptor[0...0])
+            let episodeNumber = String(descriptor[2...2])
+            if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
+                continue
+            }
+        }
+
         print("  Unable to rename file")
     }
 }
@@ -162,7 +178,7 @@ let name = moderator.add(Argument<String?>
 let rename = moderator.add(.option("r","rename", description: "Perform renames of files. Otherwise result is just preview of changes"))
 
 do {
-    try moderator.parse(["--input", "/Volumes/HAL9000/[Movies]/[Altered Carbon]", "--series", "Altered Carbon"])
+    try moderator.parse()
     guard let unwrappedInputDir = inputDir.value, let unwrappedName = name.value else {
         print(moderator.usagetext)
         exit(0)
@@ -179,10 +195,10 @@ do {
     print("✅ Done")
 }
 catch let error as ArgumentError {
-    print(error.errormessage)
+    print("💥 renameEpisodes failed: \(error.errormessage)")
     exit(Int32(error._code))
 }
 catch {
-    print("renameEpisodes failed: \(error.localizedDescription)")
+    print("💥 renameEpisodes failed: \(error.localizedDescription)")
     exit(1)
 }

@@ -49,10 +49,10 @@ do {
     print("✅ Done")
 }
 catch let error as ArgumentError {
-    main.stderror.print(error.errormessage)
+    print("💥 directorize failed: \(error.errormessage)")
     exit(Int32(error._code))
 }
 catch {
-    main.stderror.print("directorize failed: \(error.localizedDescription)")
+    print("💥 directorize failed: \(error.localizedDescription)")
     exit(1)
 }

@@ -26,10 +26,10 @@ do {
     print("✅ Done")
 }
 catch let error as ArgumentError {
-    main.stderror.print(error.errormessage)
+    print("💥 removeEmptyDirs failed: \(error.errormessage)")
     exit(Int32(error._code))
 }
 catch {
-    main.stderror.print("sortPhotos failed: \(error.localizedDescription)")
+    print("💥 removeEmptyDirs failed: \(error.localizedDescription)")
     exit(1)
 }
