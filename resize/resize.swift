@@ -51,16 +51,17 @@ do {
     try FileSystem().createFolderIfNeeded(at: outputDir.value)
 
     for item in files.value {
+        if item.trimmingCharacters(in: .whitespaces).isEmpty { continue }
         try File(path: item).resizeAt123x(width: width, height: height, outputDir: Folder(path: outputDir.value))
     }
 
     print("✅ Done")
 }
 catch let error as ArgumentError {
-    main.stderror.print(error.errormessage)
+    print("💥 resize failed: \(error.errormessage)")
     exit(Int32(error._code))
 }
 catch {
-    main.stderror.print("resize failed: \(error.localizedDescription)")
+    print("💥 resize failed: \(error.localizedDescription)")
     exit(1)
 }

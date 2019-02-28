@@ -18,15 +18,24 @@ do {
     }
 
     for item in filesAndDirs.value {
-        let fileSystemItem = try FileSystem.Item(path: item)
-        try fileSystemItem.tag(copy: onCopy.value)
+        guard let unwrappedKind = FileManager.default.itemKind(atPath: item) else { continue }
+
+        switch unwrappedKind {
+        case .file:
+            let file = try File(path: item)
+            try file.tag(copy: onCopy.value)
+
+        case .folder:
+            let folder = try Folder(path: item)
+            try folder.tag(copy: onCopy.value)
+        }
     }
 }
 catch let error as ArgumentError {
-    print(error.errormessage)
+    print("💥 tag failed: \(error.errormessage)")
     exit(Int32(error._code))
 }
 catch {
-    print("tag failed: \(error.localizedDescription)")
+    print("💥 tag failed: \(error.localizedDescription)")
     exit(1)
 }
