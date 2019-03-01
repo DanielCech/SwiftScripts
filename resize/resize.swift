@@ -43,10 +43,12 @@ do {
 
     let dimensions = unwrappedSize.trimmingCharacters(in: [" "]).split(separator: "x")
     if dimensions.count != 2 {
-        throw ArgumentError(errormessage: "Invalid size argument")
+        throw ScriptError.argumentError(argument: "Invalid size argument")
     }
 
-    guard let width = Int(dimensions[0]), let height = Int(dimensions[1]) else { throw ArgumentError(errormessage: "Invalid size argument") }
+    guard let width = Int(dimensions[0]), let height = Int(dimensions[1]) else {
+        throw ScriptError.argumentError(argument: "Invalid size argument")
+    }
 
     try FileSystem().createFolderIfNeeded(at: outputDir.value)
 
@@ -57,11 +59,7 @@ do {
 
     print("✅ Done")
 }
-catch let error as ArgumentError {
-    print("💥 resize failed: \(error.errormessage)")
-    exit(Int32(error._code))
-}
 catch {
-    print("💥 resize failed: \(error.localizedDescription)")
-    exit(1)
+    print(error.localizedDescription)
+    exit(Int32(error._code))
 }

@@ -4,7 +4,7 @@ import SwiftShell
 import Moderator
 import ScriptToolkit
 
-func generateIcon(_ icon: String, size: CGSize, ribbon: String, title: String, fillColor: String, strokeColor: String, scriptPath: String) throws {
+func generateIcon(_ icon: String, size: CGSize, ribbon: String, title: String, fillColor: String, strokeColor: String, original: Bool, scriptPath: String) throws {
     print(icon)
     guard
         let sourceRootPath = main.env["SRCROOT"],
@@ -14,7 +14,7 @@ func generateIcon(_ icon: String, size: CGSize, ribbon: String, title: String, f
         let infoPlistFile = main.env["INFOPLIST_FILE"]
         else {
             print("Missing environment variables")
-            throw ScriptError.fileNotFound // fix!
+            throw ScriptError.moreInfoNeeded(message: "Missing required environment variables SRCROOT, BUILT_PRODUCTS_DIR, UNLOCALIZED_RESOURCES_FOLDER_PATH, PROJECT_DIR, INFOPLIST_FILE")
     }
 
     print("  sourceRootPath: \(sourceRootPath)")
@@ -24,46 +24,59 @@ func generateIcon(_ icon: String, size: CGSize, ribbon: String, title: String, f
     print("  infoPlistFile: \(infoPlistFile)")
 
     let versionNumberResult = run("/usr/libexec/PlistBuddy", "-c", "Print CFBundleShortVersionString", projectDir.appendingPathComponent(path: infoPlistFile))
-
     let buildNumberResult = run("/usr/libexec/PlistBuddy", "-c", "Print CFBundleVersion", projectDir.appendingPathComponent(path: infoPlistFile))
-
     let version = "\(versionNumberResult.stdout) - \(buildNumberResult.stdout)"
 
-    guard let baseImageFile = try Folder(path: sourceRootPath).findFirstFile(name: icon) else {
-        print("  Base file not found")
-        throw ScriptError.fileNotFound
+    let sourceFolder = try Folder(path: sourceRootPath)
+
+    guard let originalAppIconFolder = sourceFolder.findFirstFolder(name: "AppIconOriginal.appiconset") else {
+        throw ScriptError.folderNotFound(message: "AppIconOriginal.appiconset - source icon asset for modifications")
     }
 
-    let targetPath = buildPath.appendingPathComponent(path: unlocalizedResourcesPath).appendingPathComponent(path: icon)
+    guard let baseImageFile = originalAppIconFolder.findFirstFile(name: icon) else {
+        throw ScriptError.fileNotFound(message: "\(icon) in AppIconOriginal.appiconset folder")
+    }
+
+    guard let appIconFolder = sourceFolder.findFirstFolder(name: "AppIcon.appiconset") else {
+        throw ScriptError.folderNotFound(message: "AppIcon.appiconset - icon asset folder")
+    }
+
+    let targetPath = appIconFolder.path.appendingPathComponent(path: icon)
     print("  targetPath: \(targetPath)")
 
-    let tempPath = "/tmp/.versionIcon"
-    try FileSystem().createFolderIfNeeded(at: tempPath)
+    if original {
+        try FileManager.default.removeItem(atPath: targetPath)
+        try baseImageFile.copy(to: appIconFolder)
+    }
+    else {
+        let tempPath = "/tmp/.versionIcon"
+        try FileSystem().createFolderIfNeeded(at: tempPath)
 
-    let ribbonsDirPath = scriptPath.appendingPathComponent(path: "Ribbons")
-    let ribbonPath = ribbonsDirPath.appendingPathComponent(path: ribbon)
+        let ribbonsDirPath = scriptPath.appendingPathComponent(path: "Ribbons")
+        let ribbonPath = ribbonsDirPath.appendingPathComponent(path: ribbon)
 
-    let titlesDirPath = scriptPath.appendingPathComponent(path: "Titles")
-    let titlePath = titlesDirPath.appendingPathComponent(path: title)
+        let titlesDirPath = scriptPath.appendingPathComponent(path: "Titles")
+        let titlePath = titlesDirPath.appendingPathComponent(path: title)
 
-    print("  Resizing ribbon")
-    let resizedRibbonPath = tempPath.appendingPathComponent(path: "resizedRibbon.png")
-    try File(path: ribbonPath).resizeImage(newName: resizedRibbonPath, size: size)
+        print("  Resizing ribbon")
+        let resizedRibbonPath = tempPath.appendingPathComponent(path: "resizedRibbon.png")
+        try File(path: ribbonPath).resizeImage(newName: resizedRibbonPath, size: size)
 
-    print("  Resizing title")
-    let resizedTitlePath = tempPath.appendingPathComponent(path: "resizedTitle.png")
-    try File(path: titlePath).resizeImage(newName: resizedTitlePath, size: size)
+        print("  Resizing title")
+        let resizedTitlePath = tempPath.appendingPathComponent(path: "resizedTitle.png")
+        try File(path: titlePath).resizeImage(newName: resizedTitlePath, size: size)
 
-    print("  Annotating")
-    let annotatedFilePath = tempPath.appendingPathComponent(path: "annotated.png")
-    run(ScriptToolkit.convertPath, baseImageFile.path, "-fill", fillColor, "-stroke", strokeColor, "-font", "Impact", "-pointsize", String(Int(size.width * 0.15)), "-gravity", "south", "-annotate", "0", version, annotatedFilePath)
+        print("  Annotating")
+        let annotatedFilePath = tempPath.appendingPathComponent(path: "annotated.png")
+        run(ScriptToolkit.convertPath, baseImageFile.path, "-fill", fillColor, "-stroke", strokeColor, "-font", "Impact", "-pointsize", String(Int(size.width * 0.15)), "-gravity", "south", "-annotate", "0", version, annotatedFilePath)
 
-    print("  Annotating with ribbon")
-    let annotatedRibbonFilePath = tempPath.appendingPathComponent(path: "annotatedRibbon.png")
-    run(ScriptToolkit.compositePath, resizedRibbonPath, annotatedFilePath, annotatedRibbonFilePath)
+        print("  Annotating with ribbon")
+        let annotatedRibbonFilePath = tempPath.appendingPathComponent(path: "annotatedRibbon.png")
+        run(ScriptToolkit.compositePath, resizedRibbonPath, annotatedFilePath, annotatedRibbonFilePath)
 
-    print("  Annotating with ribbon and title")
-    run(ScriptToolkit.compositePath, resizedTitlePath, annotatedRibbonFilePath, targetPath)
+        print("  Annotating with ribbon and title")
+        run(ScriptToolkit.compositePath, resizedTitlePath, annotatedRibbonFilePath, targetPath)
+    }
 }
 
 let moderator = Moderator(description: "VersionIcon prepares iOS icon with ribbon, text and version info")
@@ -79,6 +92,7 @@ let scriptPath = moderator.add(Argument<String?>
     .optionWithValue("script", name: "VersionIcon script path", description: "Path where Ribbons and Titles folders are located"))
 let iPhone = moderator.add(.option("iphone", description: "Generate iPhone icons"))
 let iPad = moderator.add(.option("ipad", description: "Generate iPad icons"))
+let original = moderator.add(.option("original", description: "Use original icon with no modifications (for production)"))
 
 do {
     try moderator.parse()
@@ -97,6 +111,7 @@ do {
             title: unwrappedTitle,
             fillColor: titleFillColor.value,
             strokeColor: titleStrokeColor.value,
+            original: original.value,
             scriptPath: unwrappedScriptPath
         )
 
@@ -107,6 +122,7 @@ do {
             title: unwrappedTitle,
             fillColor: titleFillColor.value,
             strokeColor: titleStrokeColor.value,
+            original: original.value,
             scriptPath: unwrappedScriptPath
         )
     }
@@ -119,6 +135,7 @@ do {
             title: unwrappedTitle,
             fillColor: titleFillColor.value,
             strokeColor: titleStrokeColor.value,
+            original: original.value,
             scriptPath: unwrappedScriptPath
         )
 
@@ -129,17 +146,14 @@ do {
             title: unwrappedTitle,
             fillColor: titleFillColor.value,
             strokeColor: titleStrokeColor.value,
+            original: original.value,
             scriptPath: unwrappedScriptPath
         )
     }
 
     print("✅ Done")
 }
-catch let error as ArgumentError {
-    print("💥 versionIcon failed: \(error.errormessage)")
-    exit(Int32(error._code))
-}
 catch {
-    print("💥 versionIcon failed: \(error.localizedDescription)")
-    exit(1)
+    print(error.localizedDescription)
+    exit(Int32(error._code))
 }

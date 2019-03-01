@@ -25,11 +25,7 @@ do {
     try folder.removeEmptyDirectories()
     print("✅ Done")
 }
-catch let error as ArgumentError {
-    print("💥 removeEmptyDirs failed: \(error.errormessage)")
-    exit(Int32(error._code))
-}
 catch {
-    print("💥 removeEmptyDirs failed: \(error.localizedDescription)")
-    exit(1)
+    print(error.localizedDescription)
+    exit(Int32(error._code))
 }

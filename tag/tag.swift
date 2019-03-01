@@ -31,11 +31,7 @@ do {
         }
     }
 }
-catch let error as ArgumentError {
-    print("💥 tag failed: \(error.errormessage)")
-    exit(Int32(error._code))
-}
 catch {
-    print("💥 tag failed: \(error.localizedDescription)")
-    exit(1)
+    print(error.localizedDescription)
+    exit(Int32(error._code))
 }

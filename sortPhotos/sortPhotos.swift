@@ -30,11 +30,7 @@ do {
     }
     try inputFolder.organizePhotos()
 }
-catch let error as ArgumentError {
-    print("💥 sortPhotos failed: \(error.errormessage)")
-    exit(Int32(error._code))
-}
 catch {
-    print("💥 sortPhotos failed: \(error.localizedDescription)")
-    exit(1)
+    print(error.localizedDescription)
+    exit(Int32(error._code))
 }

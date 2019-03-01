@@ -48,11 +48,7 @@ do {
 
     print("✅ Done")
 }
-catch let error as ArgumentError {
-    print("💥 directorize failed: \(error.errormessage)")
-    exit(Int32(error._code))
-}
 catch {
-    print("💥 directorize failed: \(error.localizedDescription)")
-    exit(1)
+    print(error.localizedDescription)
+    exit(Int32(error._code))
 }
