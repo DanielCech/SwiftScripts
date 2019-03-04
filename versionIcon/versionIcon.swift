@@ -80,6 +80,8 @@ func generateIcon(_ icon: String, size: CGSize, ribbon: String, title: String, f
 }
 
 let moderator = Moderator(description: "VersionIcon prepares iOS icon with ribbon, text and version info")
+moderator.usageFormText = "versionIcon <params>"
+
 let ribbon = moderator.add(Argument<String?>
     .optionWithValue("ribbon", name: "Icon ribbon color", description: "Name of PNG file in Ribbons folder"))
 let title = moderator.add(Argument<String?>

@@ -6,7 +6,9 @@ import SwiftShell
 import Moderator
 import ScriptToolkit
 
-let moderator = Moderator(description: "Prepare all required resolutions of iOS app icon")
+let moderator = Moderator(description: "prepareAppIcon - Prepare all required resolutions of iOS app icon")
+moderator.usageFormText = "prepareappicon <params>"
+
 let inFile = moderator.add(Argument<String?>.singleArgument(name: "input"))
 
 do {

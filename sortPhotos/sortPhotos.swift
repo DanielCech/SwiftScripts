@@ -8,6 +8,8 @@ import SwiftShell
 import FileSmith
 
 let moderator = Moderator(description: "Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.")
+moderator.usageFormText = "sortphotos <params>"
+
 let noExif = moderator.add(.option("n","noexif", description: "Do not use exiftool. Just organize files to existing folders."))
 let byCameraModel = moderator.add(.option("c","camera", description: "Sort by camera model"))
 let processM4V = moderator.add(.option("m","m4v", description: "Sort M4V by name"))

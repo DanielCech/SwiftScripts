@@ -9,6 +9,8 @@ import FileSmith
 
 
 let moderator = Moderator(description: "Removes empty dirs in directory and its subdirectories")
+moderator.usageFormText = "removeemptydirs <params>"
+
 let inputDir = moderator.add(Argument<String?>
     .optionWithValue("input", name: "Input directory", description: "Input directory for processing"))
 

@@ -7,6 +7,7 @@ import ScriptToolkit
 import SwiftShell
 
 let moderator = Moderator(description: "Resize image to particular size in @1x, @2x and @2x")
+moderator.usageFormText = "resize <params> <files>"
 
 let sizeArgument = Argument<String?>
     .optionWithValue("size", name: "Size of image in in WIDTHxHEIGHT format", description: "Resulting size in selected resolution")
@@ -43,11 +44,11 @@ do {
 
     let dimensions = unwrappedSize.trimmingCharacters(in: [" "]).split(separator: "x")
     if dimensions.count != 2 {
-        throw ScriptError.argumentError(argument: "Invalid size argument")
+        throw ScriptError.argumentError(message: "Invalid size argument")
     }
 
     guard let width = Int(dimensions[0]), let height = Int(dimensions[1]) else {
-        throw ScriptError.argumentError(argument: "Invalid size argument")
+        throw ScriptError.argumentError(message: "Invalid size argument")
     }
 
     try FileSystem().createFolderIfNeeded(at: outputDir.value)

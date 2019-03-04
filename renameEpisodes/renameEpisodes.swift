@@ -168,6 +168,7 @@ func renameSeries(name seriesName: String, season: Int, inputDir: String, rename
 var seriesInfo = [Int: Season]()
 
 let moderator = Moderator(description: "Rename seriers episodes using names from OMDb.")
+moderator.usageFormText = "renameseries <params> <files>"
 
 let inputDir = moderator.add(Argument<String?>
     .optionWithValue("input", name: "Input directory", description: "Input directory for processing"))

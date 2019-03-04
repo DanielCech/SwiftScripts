@@ -7,6 +7,7 @@ import ScriptToolkit
 import SwiftShell
 
 let moderator = Moderator(description: "Directorize - put files to separate directories with the name of file (without extension)")
+moderator.usageFormText = "directorize <params> <files>"
 
 let outputDirArgument = Argument<String?>
     .optionWithValue("output", name: "Output directory", description: "Output directory for generated images")
