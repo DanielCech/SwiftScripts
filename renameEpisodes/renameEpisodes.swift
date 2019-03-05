@@ -152,12 +152,12 @@ func renameSeries(name seriesName: String, season: Int, inputDir: String, rename
             let seasonInfo = try! JSONDecoder().decode(Season.self, from: data)
 
             seriesInfo[season] = seasonInfo
-            try? performRenames(inputDir: inputDir, renameFiles: renameFiles)
 
             if season < seasonInfo.totalSeasons {
                 renameSeries(name: seriesName, season: season + 1, inputDir: inputDir, renameFiles: renameFiles)
             }
             else {
+                try? performRenames(inputDir: inputDir, renameFiles: renameFiles)
                 print("✅ Done")
                 exit(0)
             }

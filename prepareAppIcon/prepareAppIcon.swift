@@ -14,7 +14,7 @@ let inFile = moderator.add(Argument<String?>.singleArgument(name: "input"))
 do {
     try moderator.parse()
     guard let unwrappedInFile = inFile.value else {
-        print(moderator.usagetext)
+        print("prepareAppIcon - Prepare all required resolutions of iOS app icon\nUsage prepareIcon --input <file>")
         exit(0)
     }
 
