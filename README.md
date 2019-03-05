@@ -103,17 +103,8 @@ RenameEpisodes script uses free Open Movie Database (OMDb) for obtaining the nam
 </p>
 
 ```
-Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
-
-Usage: sortPhotos <params>
-  -n,--noexif:
-      Do not use exiftool. Just organize files to existing folders.
-  -c,--camera:
-      Sort by camera model
-  -m,--m4v:
-      Sort M4V by name
-  --input <Input directory>:
-      Input directory for processing
+prepareAppIcon - Prepare all required resolutions of iOS app icon
+Usage prepareIcon --input <file>
 ```
 
 ### versionIcon
@@ -124,17 +115,23 @@ Usage: sortPhotos <params>
 ```
 VersionIcon prepares iOS icon with ribbon, text and version info
 
-Usage: versionicon
+Usage: versionIcon <params>
   --ribbon <Icon ribbon color>:
-      Icon ribbon color
+      Name of PNG file in Ribbons folder
   --title <Icon ribbon title>:
-      Icon ribbon title
+      Name of PNG file in Titles folder
+  --fillcolor <Title fill color>:
+      The fill color of version title Default = 'white'.
+  --strokecolor <Title stroke color>:
+      The stroke color of version title Default = 'black'.
   --script <VersionIcon script path>:
-      VersionIcon script path
+      Path where Ribbons and Titles folders are located
   --iphone:
       Generate iPhone icons
   --ipad:
       Generate iPad icons
+  --original:
+      Use original icon with no modifications (for production)
  ```
 
 
@@ -142,16 +139,35 @@ Usage: versionicon
 
 ### resize
 ```
-Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
+Resize image to particular size in @1x, @2x and @2x
 
-Usage: sortPhotos <params> <files>
-  -n,--noexif:
-      Do not use exiftool. Just organize files to existing folders.
-  -c,--camera:
-      Sort by camera model
-  -m,--m4v:
-      Sort M4V by name
-  --input <Input directory>:
-      Input directory for processing
+Usage: resize <params> <files>
+  --size <Size of image in in WIDTHxHEIGHT format>:
+      Resulting size in selected resolution
+  --output <Output directory>:
+      Output directory for generated images Default = './output'.
+  -i,--interactive:
+      Interactive mode. Script will ask about missing important parameters
 ```
+
+
+## Setup with Forklift
+* Script works perfectly from Forklift file manager - https://binarynights.com.
+* Open Commands > Manage Tools...
+<p align="center">
+    <img src="https://i.ibb.co/qBqMkfD/Sn-mek-obrazovky-2019-03-05-v-10-21-38.png" width="480" max-width="90%" alt="Marathon" />
+</p>
+
+* FlattenDirs: `/usr/local/bin/flatten --input "$SOURCE_PATH" --output "$TARGET_PATH"`
+* Directorize: `/usr/local/bin/directorize --move --output $TARGET_PATH $SOURCE_SELECTION_NAMES`
+* SortPhotosByDate: `/usr/local/bin/sortphotos --input "$SOURCE_PATH"`
+* SortPhotosByCamera: `/usr/local/bin/sortphotos --input "$SOURCE_PATH" --camera`
+* ReduceVideo: `/usr/local/bin/reducevideo --output "$TARGET_PATH" $SOURCE_SELECTION_PATHS`
+
+
+* Script resize uses a little bit more complicated setup. It uses iTerm2 terminal because it needs also additional parameters in interactive mode. It uses shell_helper.sh and shell_command.sh simple subsidiary scripts.
+* Resize: `/Users/dan/Documents/[Development]/[Projects]/SwiftScripts/shell_helper.sh  /usr/local/bin/resize --interactive --output $TARGET_PATH $SOURCE_SELECTION_PATHS`
+
+
+
 
