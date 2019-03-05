@@ -158,14 +158,15 @@ Usage: resize <params> <files>
     <img src="https://i.ibb.co/qBqMkfD/Sn-mek-obrazovky-2019-03-05-v-10-21-38.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
-FlattenDirs: `/usr/local/bin/flatten --input "$SOURCE_PATH" --output "$TARGET_PATH"`
-Directorize: `/usr/local/bin/directorize --move --output $TARGET_PATH $SOURCE_SELECTION_NAMES`
-SortPhotosByDate: `/usr/local/bin/sortphotos --input "$SOURCE_PATH"`
-SortPhotosByCamera: `/usr/local/bin/sortphotos --input "$SOURCE_PATH" --camera`
-ReduceVideo: `/usr/local/bin/reducevideo --output "$TARGET_PATH" $SOURCE_SELECTION_PATHS`
+* FlattenDirs: `/usr/local/bin/flatten --input "$SOURCE_PATH" --output "$TARGET_PATH"`
+* Directorize: `/usr/local/bin/directorize --move --output $TARGET_PATH $SOURCE_SELECTION_NAMES`
+* SortPhotosByDate: `/usr/local/bin/sortphotos --input "$SOURCE_PATH"`
+* SortPhotosByCamera: `/usr/local/bin/sortphotos --input "$SOURCE_PATH" --camera`
+* ReduceVideo: `/usr/local/bin/reducevideo --output "$TARGET_PATH" $SOURCE_SELECTION_PATHS`
 
-Script resize uses a little bit more complicated setup. It uses iTerm2 terminal because it needs also additional parameters in interactive mode. It uses shell_helper.sh and shell_command.sh simple subsidiary scripts.
-Resize: `/Users/dan/Documents/[Development]/[Projects]/SwiftScripts/shell_helper.sh  /usr/local/bin/resize --interactive --output $TARGET_PATH $SOURCE_SELECTION_PATHS`
+
+* Script resize uses a little bit more complicated setup. It uses iTerm2 terminal because it needs also additional parameters in interactive mode. It uses shell_helper.sh and shell_command.sh simple subsidiary scripts.
+* Resize: `/Users/dan/Documents/[Development]/[Projects]/SwiftScripts/shell_helper.sh  /usr/local/bin/resize --interactive --output $TARGET_PATH $SOURCE_SELECTION_PATHS`
 
 
 
