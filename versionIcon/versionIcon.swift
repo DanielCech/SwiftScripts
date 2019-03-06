@@ -5,8 +5,22 @@ import SwiftShell
 import Moderator
 import ScriptToolkit
 
-func generateIcon(_ icon: String, size: CGSize, ribbon: String, title: String, fillColor: String, strokeColor: String, original: Bool, scriptPath: String) throws {
+func generateIcon(
+    _ icon: String,
+    size: CGSize,
+    ribbon: String,
+    title: String,
+    fillColor: NSColor,
+    strokeColor: NSColor,
+    strokeWidth: Double,
+    font: String,
+    titleSizeRatio: Double,
+    titlePositionRatio: Double,
+    original: Bool,
+    scriptPath: String) throws {
+
     print(icon)
+
     guard
         let sourceRootPath = main.env["SRCROOT"],
         let projectDir = main.env["PROJECT_DIR"],
@@ -72,7 +86,14 @@ func generateIcon(_ icon: String, size: CGSize, ribbon: String, title: String, f
         let combinedImage = try iconImage.combine(withImage: resizedRibbonImage).combine(withImage: resizedTitleImage)
 
         print("  Annotating")
-        let resultImage = combinedImage.annotate(text: version, size: size.width * 0.2, fill: .white, stroke: .black)
+        let resultImage = try combinedImage.annotate(
+            text: version,
+            font: font,
+            size: size.width * CGFloat(titleSizeRatio),
+            position: CGFloat(titlePositionRatio),
+            fill: fillColor,
+            stroke: strokeColor,
+            strokeWidth: CGFloat(strokeWidth))
 
         let resizedIcon = try resultImage.copy(size: newSize)
 
@@ -80,30 +101,59 @@ func generateIcon(_ icon: String, size: CGSize, ribbon: String, title: String, f
     }
 }
 
+
+
+
 let moderator = Moderator(description: "VersionIcon prepares iOS icon with ribbon, text and version info")
 moderator.usageFormText = "versionIcon <params>"
 
 let ribbon = moderator.add(Argument<String?>
     .optionWithValue("ribbon", name: "Icon ribbon color", description: "Name of PNG file in Ribbons folder"))
+
 let title = moderator.add(Argument<String?>
     .optionWithValue("title", name: "Icon ribbon title", description: "Name of PNG file in Titles folder"))
+
 let titleFillColor = moderator.add(Argument<String?>
-    .optionWithValue("fillcolor", name: "Title fill color", description: "The fill color of version title").default("white"))
+    .optionWithValue("fillcolor", name: "Title fill color", description: "The fill color of version title in #xxxxxx hexa format").default("#FFFFFF"))
+
 let titleStrokeColor = moderator.add(Argument<String?>
-    .optionWithValue("strokecolor", name: "Title stroke color", description: "The stroke color of version title").default("black"))
+    .optionWithValue("strokecolor", name: "Title stroke color", description: "The stroke color of version title in #xxxxxx hexa format").default("#000000"))
+
+let titleFont = moderator.add(Argument<String?>
+    .optionWithValue("font", name: "Version label font", description: "Font used for version title.").default("Impact"))
+
+let titleSize = moderator.add(Argument<String?>
+    .optionWithValue("titlesize", name: "Version Title Size Ratio", description: "Version title size related to icon width").default("0.2"))
+
+let titlePosition = moderator.add(Argument<String?>
+    .optionWithValue("titleposition", name: "Version Title Size Ratio", description: "Version title position related to icon width").default("0.2"))
+
+let strokeWidth = moderator.add(Argument<String?>
+    .optionWithValue("strokewidth", name: "Version Title Stroke Width", description: "Version title stroke width related to icon width").default("0.03"))
+
 let scriptPath = moderator.add(Argument<String?>
     .optionWithValue("script", name: "VersionIcon script path", description: "Path where Ribbons and Titles folders are located"))
+
 let iPhone = moderator.add(.option("iphone", description: "Generate iPhone icons"))
+
 let iPad = moderator.add(.option("ipad", description: "Generate iPad icons"))
+
 let original = moderator.add(.option("original", description: "Use original icon with no modifications (for production)"))
 
 do {
-    // try moderator.parse(["--ribbon", "Red.png", "--title", "Devel.png", "--script", "/Users/dan/Documents/[Development]/[Projects]/SwiftScripts/versionIcon", "--iphone"])
+//     try moderator.parse(["--ribbon", "Red.png", "--title", "Devel.png", "--script", "/Users/dan/Documents/[Development]/[Projects]/SwiftScripts/versionIcon", "--iphone", "--font", "Arial", "--titlesize", "0.5", "--fillcolor", "#AF003C", "--strokecolor", "#EEEEEE"])
     try moderator.parse()
+    
     guard let unwrappedRibbon = ribbon.value, let unwrappedTitle = title.value, let unwrappedScriptPath = scriptPath.value else {
         print(moderator.usagetext)
         exit(0)
     }
+
+    guard let titleSizeRatio = Double(titleSize.value) else { throw ScriptError.argumentError(message: "Invalid titlesize argument") }
+    guard let titlePosition = Double(titlePosition.value) else { throw ScriptError.argumentError(message: "Invalid titleposition argument") }
+    guard let strokeWidth = Double(strokeWidth.value) else { throw ScriptError.argumentError(message: "Invalid strokewidth argument") }
+    guard let fillColor = NSColor(hexString: titleFillColor.value) else { throw ScriptError.argumentError(message: "Invalid fillcolor argument") }
+    guard let strokeColor = NSColor(hexString: titleStrokeColor.value) else { throw ScriptError.argumentError(message: "Invalid strokecolor argument") }
 
     print("⌚️ Processing")
     
@@ -113,8 +163,12 @@ do {
             size: CGSize(width: 120, height: 120),
             ribbon: unwrappedRibbon,
             title: unwrappedTitle,
-            fillColor: titleFillColor.value,
-            strokeColor: titleStrokeColor.value,
+            fillColor: fillColor,
+            strokeColor: strokeColor,
+            strokeWidth: strokeWidth,
+            font: titleFont.value,
+            titleSizeRatio: titleSizeRatio,
+            titlePositionRatio: titlePosition,
             original: original.value,
             scriptPath: unwrappedScriptPath
         )
@@ -124,8 +178,12 @@ do {
             size: CGSize(width: 180, height: 180),
             ribbon: unwrappedRibbon,
             title: unwrappedTitle,
-            fillColor: titleFillColor.value,
-            strokeColor: titleStrokeColor.value,
+            fillColor: fillColor,
+            strokeColor: strokeColor,
+            strokeWidth: strokeWidth,
+            font: titleFont.value,
+            titleSizeRatio: titleSizeRatio,
+            titlePositionRatio: titlePosition,
             original: original.value,
             scriptPath: unwrappedScriptPath
         )
@@ -137,8 +195,12 @@ do {
             size: CGSize(width: 76, height: 76),
             ribbon: unwrappedRibbon,
             title: unwrappedTitle,
-            fillColor: titleFillColor.value,
-            strokeColor: titleStrokeColor.value,
+            fillColor: fillColor,
+            strokeColor: strokeColor,
+            strokeWidth: strokeWidth,
+            font: titleFont.value,
+            titleSizeRatio: titleSizeRatio,
+            titlePositionRatio: titlePosition,
             original: original.value,
             scriptPath: unwrappedScriptPath
         )
@@ -148,8 +210,12 @@ do {
             size: CGSize(width: 152, height: 152),
             ribbon: unwrappedRibbon,
             title: unwrappedTitle,
-            fillColor: titleFillColor.value,
-            strokeColor: titleStrokeColor.value,
+            fillColor: fillColor,
+            strokeColor: strokeColor,
+            strokeWidth: strokeWidth,
+            font: titleFont.value,
+            titleSizeRatio: titleSizeRatio,
+            titlePositionRatio: titlePosition,
             original: original.value,
             scriptPath: unwrappedScriptPath
         )
@@ -158,6 +224,10 @@ do {
     print("✅ Done")
 }
 catch {
-    print(error.localizedDescription)
+    if let printableError = error as? PrintableError { print(printableError.errorDescription) }
+    else {
+        print(error.localizedDescription)
+    }
+
     exit(Int32(error._code))
 }

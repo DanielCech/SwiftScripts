@@ -34,6 +34,10 @@ do {
     }
 }
 catch {
-    print(error.localizedDescription)
+    if let printableError = error as? PrintableError { print(printableError.errorDescription) }
+    else {
+        print(error.localizedDescription)
+    }
+
     exit(Int32(error._code))
 }

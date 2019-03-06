@@ -18,13 +18,17 @@ do {
         print(moderator.usagetext)
         exit(0)
     }
-    
+
     print("⌚️ Processing")
     let inputFolder = try Folder(path: unwrappedInputDir)
     try inputFolder.flattenFolderStructure(outputDir: unwrappedOutputDir, move: move.value)
     print("✅ Done")
 }
 catch {
-    print(error.localizedDescription)
+    if let printableError = error as? PrintableError { print(printableError.errorDescription) }
+    else {
+        print(error.localizedDescription)
+    }
+
     exit(Int32(error._code))
 }
