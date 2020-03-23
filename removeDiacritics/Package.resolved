@@ -1,0 +1,52 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Files",
+        "repositoryURL": "https://github.com/JohnSundell/Files.git",
+        "state": {
+          "branch": null,
+          "revision": "22fe84797d499ffca911ccd896b34efaf06a50b9",
+          "version": "4.1.1"
+        }
+      },
+      {
+        "package": "FileSmith",
+        "repositoryURL": "https://github.com/kareman/FileSmith.git",
+        "state": {
+          "branch": null,
+          "revision": "476472740a38c64634b388f2b311ec518bfa3265",
+          "version": "0.3.0"
+        }
+      },
+      {
+        "package": "Moderator",
+        "repositoryURL": "https://github.com/kareman/Moderator.git",
+        "state": {
+          "branch": null,
+          "revision": "a4b8f05bcff3c283dd32e4ec6bb3da3b16a29045",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "package": "ScriptToolkit",
+        "repositoryURL": "https://github.com/DanielCech/ScriptToolkit.git",
+        "state": {
+          "branch": null,
+          "revision": "21fb8e1cf574ca15b5e682470f9a1cf9237bb981",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "SwiftShell",
+        "repositoryURL": "https://github.com/kareman/SwiftShell.git",
+        "state": {
+          "branch": null,
+          "revision": "fb7fc2c9ad8811caf324431a508fb79e3fb74f99",
+          "version": "5.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
