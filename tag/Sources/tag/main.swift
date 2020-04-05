@@ -19,7 +19,7 @@ do {
     
     for item in filesAndDirs.value {
 
-        switch FileManager.default.locationKind(at: item) {
+        switch FileManager.default.locationKind(for: item) {
         case .file:
             let file = try File(path: item)
             try file.tag(copy: onCopy.value)
