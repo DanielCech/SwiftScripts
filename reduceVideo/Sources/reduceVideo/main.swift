@@ -4,12 +4,11 @@ import Moderator
 import ScriptToolkit
 import SwiftShell
 
-
-let moderator = Moderator(description: "Prepare song for practising - Add 5s silence at the beginning and set tempo to 75%, 90%, 100%")
-moderator.usageFormText = "practise <params> <files>"
+let moderator = Moderator(description: "ReduceVideo - Make the video file smaller for use with iPad")
+moderator.usageFormText = "reducevideo <params> <files>"
 
 let outputDirArgument = Argument<String?>
-    .optionWithValue("output", name: "Output directory", description: "Output directory for generated images")
+    .optionWithValue("output", name: "Output directory", description: "Output directory for generated pdfs")
     .default(main.currentdirectory.appendingPathComponent(path: "output"))
 let outputDir = moderator.add(outputDirArgument)
 
@@ -19,11 +18,6 @@ let files = moderator.add(Argument<String?>.singleArgument(name: "multiple").rep
 do {
     try moderator.parse()
 
-    guard !files.value.isEmpty else {
-        print(moderator.usagetext)
-        exit(0)
-    }
-
     print("⌚️ Processing")
 
     try Folder.root.createSubfolderIfNeeded(at: outputDir.value)
@@ -31,8 +25,8 @@ do {
 
     for item in files.value {
         let file = try File(path: item)
-        print(file.name)
-        try file.prepareSongForPractise(outputFolder: outputFolder)
+        let newName = outputFolder.path.appendingPathComponent(path: file.name)
+        try file.reduceVideo(newName: newName)
     }
 
     print("✅ Done")
