@@ -5,6 +5,9 @@ import SwiftShell
 import Moderator
 import ScriptToolkit
 
+
+
+
 func generateIcon(
     _ icon: String,
     size: CGSize,
@@ -64,17 +67,23 @@ func generateIcon(
     let newSize = CGSize(width: size.width / 2, height: size.height / 2)
 
     print("  Resizing ribbon")
-    let ribbonImage = ribbon.map { NSImage(contentsOfFile: $0) }
-    let resizedRibbonImage = ribbonImage.map { try? $0?.copy(size: newSize) }
+    let ribbonImage: NSImage? = ribbon.map { NSImage(contentsOfFile: $0) } ?? nil
+    let resizedRibbonImage: NSImage? = ribbonImage.map { try? $0.copy(size: newSize) } ?? nil
 
     print("  Resizing title")
-    let titleImage = ribbon.map { NSImage(contentsOfFile: $0) }
-    let resizedTitleImage = titleImage.map { try? $0?.copy(size: newSize) }
+    let titleImage: NSImage? = ribbon.map { NSImage(contentsOfFile: $0) } ?? nil
+    let resizedTitleImage: NSImage? = titleImage.map { try? $0.copy(size: newSize) } ?? nil
 
     let iconImageData = try Data(contentsOf: URL(fileURLWithPath: baseImageFile.path))
     guard let iconImage = NSImage(data: iconImageData) else { throw ScriptError.generalError(message: "Invalid image file") }
 
-    let combinedImage = try iconImage.combine(withImage: resizedRibbonImage).combine(withImage: resizedTitleImage)
+    var combinedImage = iconImage
+    if let unwrappedResizedRibbonImage = resizedRibbonImage {
+        combinedImage = try combinedImage.combine(withImage: unwrappedResizedRibbonImage)
+    }
+    if let unwrappedResizedTitleImage = resizedTitleImage {
+        combinedImage = try combinedImage.combine(withImage: unwrappedResizedTitleImage)
+    }
 
     print("  Annotating")
     let resultImage = try combinedImage.annotate(
