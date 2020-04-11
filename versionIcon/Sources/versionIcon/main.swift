@@ -6,7 +6,16 @@ import Moderator
 import ScriptToolkit
 
 
+func getVersionText(projectDir: String, infoPlistFile: String) -> String {
+    let versionNumberResult = run("/usr/libexec/PlistBuddy", "-c", "Print CFBundleShortVersionString", projectDir.appendingPathComponent(path: infoPlistFile))
+    let buildNumberResult = run("/usr/libexec/PlistBuddy", "-c", "Print CFBundleVersion", projectDir.appendingPathComponent(path: infoPlistFile))
+    return "\(versionNumberResult.stdout) - \(buildNumberResult.stdout)"
+}
 
+func resizeImage(fileName: String?, size: CGSize) -> NSImage? {
+    let ribbonImage: NSImage? = fileName.map { NSImage(contentsOfFile: $0) } ?? nil
+    return ribbonImage.map { try? $0.copy(size: size) } ?? nil
+}
 
 func generateIcon(
     _ icon: String,
@@ -43,9 +52,7 @@ func generateIcon(
     print("  projectDir: \(projectDir)")
     print("  infoPlistFile: \(infoPlistFile)")
 
-    let versionNumberResult = run("/usr/libexec/PlistBuddy", "-c", "Print CFBundleShortVersionString", projectDir.appendingPathComponent(path: infoPlistFile))
-    let buildNumberResult = run("/usr/libexec/PlistBuddy", "-c", "Print CFBundleVersion", projectDir.appendingPathComponent(path: infoPlistFile))
-    let version = "\(versionNumberResult.stdout) - \(buildNumberResult.stdout)"
+    let version = getVersionText(projectDir: projectDir, infoPlistFile: infoPlistFile)
 
     let sourceFolder = try Folder(path: sourceRootPath)
 
@@ -67,12 +74,10 @@ func generateIcon(
     let newSize = CGSize(width: size.width / 2, height: size.height / 2)
 
     print("  Resizing ribbon")
-    let ribbonImage: NSImage? = ribbon.map { NSImage(contentsOfFile: $0) } ?? nil
-    let resizedRibbonImage: NSImage? = ribbonImage.map { try? $0.copy(size: newSize) } ?? nil
+    let resizedRibbonImage = resizeImage(fileName: ribbon, size: newSize)
 
     print("  Resizing title")
-    let titleImage: NSImage? = ribbon.map { NSImage(contentsOfFile: $0) } ?? nil
-    let resizedTitleImage: NSImage? = titleImage.map { try? $0.copy(size: newSize) } ?? nil
+    let resizedTitleImage = resizeImage(fileName: title, size: newSize)
 
     let iconImageData = try Data(contentsOf: URL(fileURLWithPath: baseImageFile.path))
     guard let iconImage = NSImage(data: iconImageData) else { throw ScriptError.generalError(message: "Invalid image file") }
@@ -95,7 +100,8 @@ func generateIcon(
         titleAlignment: titleAlignment,
         fill: fillColor,
         stroke: strokeColor,
-        strokeWidth: CGFloat(strokeWidth))
+        strokeWidth: CGFloat(strokeWidth)
+    )
 
     let resizedIcon = try resultImage.copy(size: newSize)
 
@@ -103,13 +109,14 @@ func generateIcon(
 }
 
 func restoreIcon(_ icon: String) throws {
-//    guard
-//        let sourceRootPath = main.env["SRCROOT"]
-//    else {
-//        print("Missing environment variables")
-//        throw ScriptError.moreInfoNeeded(message: "Missing required environment variables: SRCROOT, PROJECT_DIR, INFOPLIST_FILE")
-//    }
-    let sourceRootPath = "/Users/dan/Documents/[Development]/[Projects]/RoboticArmApp"
+    guard
+        let sourceRootPath = main.env["SRCROOT"]
+    else {
+        print("Missing environment variables")
+        throw ScriptError.moreInfoNeeded(message: "Missing required environment variables: SRCROOT, PROJECT_DIR, INFOPLIST_FILE")
+    }
+        
+//    let sourceRootPath = "/Users/dan/Documents/[Development]/[Projects]/RoboticArmApp"
 
     let sourceFolder = try Folder(path: sourceRootPath)
 
@@ -174,10 +181,10 @@ let iPad = moderator.add(.option("ipad", description: "Generate iPad icons"))
 let original = moderator.add(.option("original", description: "Use original icon with no modifications (for production)"))
 
 do {
-     try moderator.parse(["--ribbon", "Red.png", "--title", "Devel.png", "--iphone", "--font", "Arial", "--titleSize", "0.5", "--fillColor", "#AF003C", "--strokeColor", "#EEEEEE"])
+//     try moderator.parse(["--ribbon", "Red.png", "--title", "Devel.png", "--iphone", "--font", "Arial", "--titleSize", "0.5", "--fillColor", "#AF003C", "--strokeColor", "#EEEEEE"])
 
 //    try moderator.parse(["--original"])
-//    try moderator.parse()
+    try moderator.parse()
 
     guard iPhone.value || iPad.value else {
         throw ScriptError.argumentError(message: "You must enter at least one of parameters --iphone or --ipad")
