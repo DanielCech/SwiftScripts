@@ -1,7 +1,7 @@
 import XCTest
 import class Foundation.Bundle
 
-final class multipleCallTests: XCTestCase {
+final class invokeTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
@@ -12,7 +12,7 @@ final class multipleCallTests: XCTestCase {
             return
         }
 
-        let fooBinary = productsDirectory.appendingPathComponent("multipleCall")
+        let fooBinary = productsDirectory.appendingPathComponent("invoke")
 
         let process = Process()
         process.executableURL = fooBinary

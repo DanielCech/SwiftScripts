@@ -1,7 +1,7 @@
 import XCTest
 
-import multipleCallTests
+import invokeTests
 
 var tests = [XCTestCaseEntry]()
-tests += multipleCallTests.allTests()
+tests += invokeTests.allTests()
 XCTMain(tests)
