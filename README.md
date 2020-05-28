@@ -133,7 +133,7 @@ Usage: versionIcon <params>
   --original:
       Use original icon with no modifications (for production)
  ```
-
+VersionIcon is now available as a separate easy-to-use library here https://github.com/DanielCech/VersionIcon.
 
 -----------------------------------------------------------
 
@@ -148,6 +148,18 @@ Usage: resize <params> <files>
       Output directory for generated images Default = './output'.
   -i,--interactive:
       Interactive mode. Script will ask about missing important parameters
+```
+
+-----------------------------------------------------------
+
+### invoke
+```
+Invoke shell command with argument from file or command line
+
+Usage: invoke <params>
+  --action <Shell action to run>:
+      Use @param@, @absolutepath@ (using absolute path with argument)
+  --file <File with parameter values on each line>:
 ```
 
 
