@@ -7,8 +7,10 @@ import AppKit
 
 extension File {
     func resizeImage(newName: String, size: CGSize) throws {
-        let image: NSImage? = NSImage(contentsOfFile: self.path)
-        let newImage = image.map { try? $0.copy(size: size) } ?? nil
+        let image: NSImage? = NSImage(contentsOfFile: self.path) ?? NSImage()
+        let newSize = CGSize(width: size.width / 2, height: size.height / 2)
+        
+        let newImage = image.map { try? $0.copy(size: newSize) } ?? nil
         if let unwrappedNewImage = newImage {
             
             try unwrappedNewImage.savePNGRepresentationToURL(url: URL(fileURLWithPath: newName))
