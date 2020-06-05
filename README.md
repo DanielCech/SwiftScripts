@@ -164,7 +164,7 @@ Usage: invoke <params>
 
 
 ## Setup with Forklift
-* Script works perfectly from Forklift file manager - https://binarynights.com.
+* Script works perfectly with Forklift file manager - https://binarynights.com.
 * Open Commands > Manage Tools...
 <p align="center">
     <img src="https://i.ibb.co/qBqMkfD/Sn-mek-obrazovky-2019-03-05-v-10-21-38.png" width="480" max-width="90%" alt="Marathon" />
