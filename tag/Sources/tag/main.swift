@@ -17,8 +17,7 @@ do {
         exit(0)
     }
     
-    for item in filesAndDirs.value {
-
+    for item in filesAndDirs.value {        
         switch FileManager.default.locationKind(for: item) {
         case .file:
             let file = try File(path: item)
@@ -27,6 +26,9 @@ do {
         case .folder:
             let folder = try Folder(path: item)
             try folder.tag(copy: onCopy.value)
+            
+        default:
+            continue
         }
     }
 }
