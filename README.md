@@ -12,9 +12,9 @@ Please install these free tools first. Scripts rely on them:
     <img src="https://i.ibb.co/Mh479Pz/Tag.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
-```
 Tag file or directory with timestamp (YYYY-MM-DDc) based on last modification date
 
+```
 Usage: tag <params> <file or dir>
   -c,--copy:
       Tags copy of the file
@@ -27,9 +27,9 @@ Usage: tag <params> <file or dir>
     <img src="https://i.ibb.co/LvcH7Zk/Flatten.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
-```
 Flatten directory structure and make long file names.
 
+```
 Usage: flatten <params>
   -m,--move:
       Move files from source folder
@@ -42,9 +42,10 @@ Usage: flatten <params>
 -----------------------------------------------------------
 
 ### removeEmptyDirs
-```
+
 Removes empty dirs in directory and its subdirectories
 
+```
 Usage: removeEmptyDirs <params>
   --input <Input directory>:
       Input directory for processing
@@ -58,9 +59,9 @@ Usage: removeEmptyDirs <params>
     <img src="https://i.ibb.co/FwqVskk/sort-Photos.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
-```
 Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
 
+```
 Usage: sortPhotos <params>
   -n,--noexif:
       Do not use exiftool. Just organize files to existing folders.
@@ -81,9 +82,9 @@ Sort photos uses EXIFtool for sorting photos based on date or camera type. Curre
     <img src="https://i.ibb.co/BcbB2nF/Rename-Episodes.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
-```
 Rename seriers episodes using names from OMDb.
 
+```
 Usage: renameepisodes
   --input <Input directory>:
       Input directory for processing
@@ -95,6 +96,19 @@ Usage: renameepisodes
 
 RenameEpisodes script uses free Open Movie Database (OMDb) for obtaining the names of episodes.
 
+-----------------------------------------------------------
+
+### invoke
+
+Invoke shell command with substituted argument from each line of input file. 
+
+```
+Usage: invoke <params>
+  --action <Shell action to run>:
+      Use @param@, @absolutepath@ (using absolute path with argument)
+  --file <File with parameter values on each line>:
+```
+
 ## iOS Development
 
 ### prepareAppIcon
@@ -102,45 +116,19 @@ RenameEpisodes script uses free Open Movie Database (OMDb) for obtaining the nam
     <img src="https://i.ibb.co/MC5MDM6/Prepare-App-Icon.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
-```
 prepareAppIcon - Prepare all required resolutions of iOS app icon
+
+```
 Usage prepareIcon --input <file>
 ```
-
-### versionIcon
-<p align="center">
-    <img src="https://i.ibb.co/4Zgprnc/AppIcon.png" width="180" max-width="180" alt="Marathon" />
-</p>
-
-```
-VersionIcon prepares iOS icon with ribbon, text and version info
-
-Usage: versionIcon <params>
-  --ribbon <Icon ribbon color>:
-      Name of PNG file in Ribbons folder
-  --title <Icon ribbon title>:
-      Name of PNG file in Titles folder
-  --fillcolor <Title fill color>:
-      The fill color of version title Default = 'white'.
-  --strokecolor <Title stroke color>:
-      The stroke color of version title Default = 'black'.
-  --script <VersionIcon script path>:
-      Path where Ribbons and Titles folders are located
-  --iphone:
-      Generate iPhone icons
-  --ipad:
-      Generate iPad icons
-  --original:
-      Use original icon with no modifications (for production)
- ```
-VersionIcon is now available as a separate easy-to-use library here https://github.com/DanielCech/VersionIcon.
 
 -----------------------------------------------------------
 
 ### resize
-```
+
 Resize image to particular size in @1x, @2x and @2x
 
+```
 Usage: resize <params> <files>
   --size <Size of image in in WIDTHxHEIGHT format>:
       Resulting size in selected resolution
@@ -152,14 +140,49 @@ Usage: resize <params> <files>
 
 -----------------------------------------------------------
 
-### invoke
-```
-Invoke shell command with argument from file or command line
+### colorPalette
 
-Usage: invoke <params>
-  --action <Shell action to run>:
-      Use @param@, @absolutepath@ (using absolute path with argument)
-  --file <File with parameter values on each line>:
+Shows hexa codes of colors in Xcode palette. Input dir (or one of its subdirectories) should contain `.xcassets` folder and `App Colors` subfolder with Xcode palette colors. 
+
+```
+Usage: colorPalette <params>
+  --input <Input directory>:
+      Input directory for processing
+  -h,--sortByHexa:
+      Sort colors by hexa code
+```
+
+Output sorted by name:
+```
+  background:
+    #FFFFFF (light)
+    #000000 (dark)
+  baseBackground:
+    #F9F7F4 (light)
+  borderGray:
+    #000000 (light)
+  brigthGreen:
+    #008B6D (light)
+  dashboardBackground:
+    #F9F7F4 (light)
+  ...
+```
+
+Output sorted by color:
+```
+  #000000:
+    background (dark)
+    borderGray (light)
+  #008B6D:
+    brigthGreen (light)
+  #1B1F2B:
+    harborBlack (light)
+  #28514F:
+    greenBackground (light)
+  #2F91FF:
+    tint (light)
+  #333333:
+    text (light)
 ```
 
 
