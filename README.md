@@ -1,9 +1,6 @@
 # SwiftScripts
 
 Set of macOS shell scripts written in Swift. Scripts can help with simple repeptitive tasks mainly in iOS development.
-Please install these free tools first. Scripts rely on them:
-* Image Magick - https://www.imagemagick.org
-* EXIFtool - https://www.sno.phy.queensu.ca/~phil/exiftool/
 
 ## General Purpose Scripts
 
@@ -59,7 +56,7 @@ Usage: removeEmptyDirs <params>
     <img src="https://i.ibb.co/FwqVskk/sort-Photos.png" width="480" max-width="90%" alt="Marathon" />
 </p>
 
-Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata.
+Sorts folder of JPEG images to folders using EXIF metadata. It tries to sort video files without metadata. Please install utility EXIFtool first. https://www.sno.phy.queensu.ca/~phil/exiftool/
 
 ```
 Usage: sortPhotos <params>
