@@ -1,6 +1,6 @@
 # SwiftScripts
 
-Set of macOS shell scripts written in Swift. Scripts can help with simple repeptitive tasks mainly in iOS development.
+Set of macOS shell scripts written in Swift. Scripts can help with simple repetitive tasks mainly in iOS development.
 
 ## General Purpose Scripts
 
