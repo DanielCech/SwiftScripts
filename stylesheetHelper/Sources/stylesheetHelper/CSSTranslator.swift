@@ -90,7 +90,7 @@ func style(css textInput: String) -> String {
     var elements = [String]()
     
     if let unwrappedFontName = fontName, let unwrappedFontWeight = fontWeight, let unwrappedFontSize = fontSize {
-        elements.append("fontStyle(R.font.\(unwrappedFontName)\(unwrappedFontWeight)(size: \(unwrappedFontSize))")
+        elements.append("fontStyle(R.font.\(unwrappedFontName)\(unwrappedFontWeight)(size: \(unwrappedFontSize))!)")
     }
 
     if let unwrappedAlignment = alignment {
