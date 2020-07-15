@@ -4,33 +4,29 @@ let projectFolder = "/Users/danielcech/Documents/[Development]/[Projects]/harbor
 
 let textInput =
 """
-/* 202-712-6193 */
+/* dan.loard@gmail.com */
 
 
-position: static;
-width: 249px;
-height: 19px;
-left: 0px;
-top: 80px;
+position: absolute;
+width: 153px;
+height: 20px;
+left: 111px;
+top: 230px;
 
-font-family: SF Pro Display;
+/* Defaut Body Text */
+
+font-family: SF Pro Text;
 font-style: normal;
 font-weight: normal;
-font-size: 16px;
-line-height: 19px;
-/* identical to box height */
+font-size: 15px;
+line-height: 20px;
+/* identical to box height, or 133% */
 
+text-align: center;
 
-/* Navy */
+/* Cool Grey */
 
-color: #1B1F2B;
-
-/* Inside Auto Layout */
-
-flex: none;
-order: 2;
-align-self: flex-start;
-margin: 0px 12px;
+color: #65727B;
 """
 var colorPalette = try loadColorPalette()
 print(style(css: textInput))

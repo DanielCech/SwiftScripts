@@ -102,7 +102,7 @@ func style(css textInput: String) -> String {
     }
     
     if let unwrappedLetterSpacing = letterSpacing {
-        elements.append("kerning(\(unwrappedLetterSpacing))")
+        elements.append("kernStyle(\(unwrappedLetterSpacing))")
     }
     
     if let unwrappedColor = color {
