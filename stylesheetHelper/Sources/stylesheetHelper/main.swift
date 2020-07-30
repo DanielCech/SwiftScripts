@@ -1,32 +1,17 @@
 import Foundation
+import Files
 
-let projectFolder = "/Users/danielcech/Documents/[Development]/[Projects]/harbor-iOS"
+let projectFolder = Folder.current.path
 
-let textInput =
-"""
-/* dan.loard@gmail.com */
+print("🟢 Enter CSS style (finish last line with `zzz`):")
 
+var textInput = ""
+while let line = readLine(strippingNewline: false) {
+    if line.starts(with: "zzz") { break }
+    textInput += line
+}
 
-position: absolute;
-width: 153px;
-height: 20px;
-left: 111px;
-top: 230px;
-
-/* Defaut Body Text */
-
-font-family: SF Pro Text;
-font-style: normal;
-font-weight: normal;
-font-size: 15px;
-line-height: 20px;
-/* identical to box height, or 133% */
-
-text-align: center;
-
-/* Cool Grey */
-
-color: #65727B;
-"""
 var colorPalette = try loadColorPalette()
+print("\n💡 Stylesheet definition:")
 print(style(css: textInput))
+print("")
