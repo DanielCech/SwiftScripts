@@ -1,5 +1,6 @@
 import Foundation
 import Files
+import AppKit
 
 let projectFolder = Folder.current.path
 
@@ -12,6 +13,11 @@ while let line = readLine(strippingNewline: false) {
 }
 
 var colorPalette = try loadColorPalette()
+let styleText = style(css: textInput)
 print("\n💡 Stylesheet definition:")
-print(style(css: textInput))
-print("")
+print(styleText)
+print("\nCopied to clipboard\n")
+
+let pasteboard = NSPasteboard.general
+pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+pasteboard.setString(styleText, forType: NSPasteboard.PasteboardType.string)

@@ -53,7 +53,7 @@ func style(css textInput: String) -> String {
 
     // Postprocessing
     if alignment == nil {
-        alignment = ".left"
+        alignment = ".natural"
     }
 
     if fontWeight == nil {

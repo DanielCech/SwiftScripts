@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/DanielCech/ScriptToolkit.git",
         "state": {
           "branch": "master",
-          "revision": "790faa94179d3c28934fe29b5452dc5fca4b4123",
+          "revision": "a19724cbd9065120c40e3b98e07c1cd2627b3dd7",
           "version": null
         }
       },
@@ -33,7 +33,7 @@
         "repositoryURL": "https://github.com/kareman/SwiftShell.git",
         "state": {
           "branch": "master",
-          "revision": "fb7fc2c9ad8811caf324431a508fb79e3fb74f99",
+          "revision": "99680b2efc7c7dbcace1da0b3979d266f02e213c",
           "version": null
         }
       }
