@@ -74,6 +74,20 @@ func style(css textInput: String) -> String {
     if letterSpacing == "0" {
         letterSpacing = nil
     }
+    else if let unwrappedLetterSpacing = letterSpacing, unwrappedLetterSpacing.contains("em") {
+        let stringValue = unwrappedLetterSpacing.replacingOccurrences(of: "em", with: "")
+        
+        if
+            let floatValue = Float(stringValue),
+            let unwrappedFontSize = fontSize,
+            let floatFontSize = Float(unwrappedFontSize) {
+            
+            letterSpacing = String(Double(floatValue * floatFontSize).rounded(toPlaces: 2))
+        }
+        else {
+            letterSpacing = nil
+        }
+    }
     
     if
         let unwrappedColor = color?.uppercased(),
