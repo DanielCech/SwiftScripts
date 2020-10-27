@@ -1,9 +1,8 @@
-import Foundation
+import Alamofire
 import Files
+import Foundation
 import Moderator
 import ScriptToolkit
-import Alamofire
-
 
 struct Season: Decodable {
     var episodes: [Episode]
@@ -65,7 +64,7 @@ extension File {
             let seasonInt = Int(unwrappedSeason),
             let unwrappedEpisode = episode,
             let episodeInt = Int(unwrappedEpisode)
-            else { return false }
+        else { return false }
 
         guard seasonInt <= seriesInfo.keys.count else { return false }
         guard let season = seriesInfo[seasonInt] else { return false }
@@ -91,48 +90,48 @@ func performRenames(inputDir: String, renameFiles: Bool) throws {
         let fileName = file.nameExcludingExtension
 
         if let descriptor = matches(for: "[sS]\\d\\d[eE]\\d\\d", in: fileName).first {
-            let seasonNumber = String(descriptor[1...2])
-            let episodeNumber = String(descriptor[4...5])
+            let seasonNumber = String(descriptor[1 ... 2])
+            let episodeNumber = String(descriptor[4 ... 5])
             if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
 
         if let descriptor = matches(for: "[sS]\\d[eE]\\d\\d", in: fileName).first {
-            let seasonNumber = String(descriptor[1...1])
-            let episodeNumber = String(descriptor[3...4])
+            let seasonNumber = String(descriptor[1 ... 1])
+            let episodeNumber = String(descriptor[3 ... 4])
             if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
 
         if let descriptor = matches(for: "[sS]\\d[eE]\\d", in: fileName).first {
-            let seasonNumber = String(descriptor[1...1])
-            let episodeNumber = String(descriptor[3...3])
+            let seasonNumber = String(descriptor[1 ... 1])
+            let episodeNumber = String(descriptor[3 ... 3])
             if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
 
         if let descriptor = matches(for: "\\d\\d[xX]\\d\\d", in: fileName).first {
-            let seasonNumber = String(descriptor[0...1])
-            let episodeNumber = String(descriptor[3...4])
+            let seasonNumber = String(descriptor[0 ... 1])
+            let episodeNumber = String(descriptor[3 ... 4])
             if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
 
         if let descriptor = matches(for: "\\d[xX]\\d\\d", in: fileName).first {
-            let seasonNumber = String(descriptor[0...0])
-            let episodeNumber = String(descriptor[2...3])
+            let seasonNumber = String(descriptor[0 ... 0])
+            let episodeNumber = String(descriptor[2 ... 3])
             if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
         }
 
         if let descriptor = matches(for: "\\d[xX]\\d", in: fileName).first {
-            let seasonNumber = String(descriptor[0...0])
-            let episodeNumber = String(descriptor[2...2])
+            let seasonNumber = String(descriptor[0 ... 0])
+            let episodeNumber = String(descriptor[2 ... 2])
             if try file.renameEpisode(season: seasonNumber, episode: episodeNumber, renameFiles: renameFiles) {
                 continue
             }
@@ -176,7 +175,7 @@ let inputDir = moderator.add(Argument<String?>
 let name = moderator.add(Argument<String?>
     .optionWithValue("series", name: "Name of series", description: "Try http://www.omdbapi.com first if needed."))
 
-let rename = moderator.add(.option("r","rename", description: "Perform renames of files. Otherwise result is just preview of changes"))
+let rename = moderator.add(.option("r", "rename", description: "Perform renames of files. Otherwise result is just preview of changes"))
 
 do {
     try moderator.parse()

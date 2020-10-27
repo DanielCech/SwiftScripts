@@ -1,9 +1,8 @@
-import Foundation
 import Files
+import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
-
 
 let moderator = Moderator(description: "Prepare song for practising - Add 5s silence at the beginning and set tempo to 75%, 90%, 100%")
 moderator.usageFormText = "practise <params> <files>"
@@ -14,7 +13,6 @@ let outputDirArgument = Argument<String?>
 let outputDir = moderator.add(outputDirArgument)
 
 let files = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
-
 
 do {
     try moderator.parse()

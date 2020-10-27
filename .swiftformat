@@ -1,0 +1,19 @@
+#
+# SwiftFormat configuration file commonly used in STRV (v 0.1)
+# https://github.com/nicklockwood/SwiftFormat
+#
+# Feel free to send pull request or suggest improvements!
+#
+# To run this only go to terminal swiftformat .
+#
+
+# format options
+--allman false
+--commas inline
+--elseposition "next-line"
+
+# file options
+--exclude vendor,Pods,**/*generated.swift,**/fastlane
+
+# rules
+--disable blankLinesAroundMark,spaceAroundOperators,trailingCommas,strongOutlets

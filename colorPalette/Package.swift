@@ -18,9 +18,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "colorPalette",
-            dependencies: ["Files", "FileSmith", "SwiftShell", "ScriptToolkit", "Moderator"]),
+            dependencies: ["Files", "FileSmith", "SwiftShell", "ScriptToolkit", "Moderator"]
+        ),
         .testTarget(
             name: "colorPaletteTests",
-            dependencies: ["colorPalette"]),
+            dependencies: ["colorPalette"]
+        ),
     ]
 )

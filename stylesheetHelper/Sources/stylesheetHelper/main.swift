@@ -1,6 +1,6 @@
-import Foundation
-import Files
 import AppKit
+import Files
+import Foundation
 
 let projectFolder = Folder.current.path
 

@@ -18,9 +18,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "flatten",
-            dependencies: ["Files", "FileSmith", "SwiftShell", "ScriptToolkit", "Moderator"]),
+            dependencies: ["Files", "FileSmith", "SwiftShell", "ScriptToolkit", "Moderator"]
+        ),
         .testTarget(
             name: "flattenTests",
-            dependencies: ["flatten"]),
+            dependencies: ["flatten"]
+        ),
     ]
 )

@@ -1,5 +1,5 @@
-import Foundation
 import Files
+import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
@@ -16,10 +16,8 @@ let outputDirArgument = Argument<String?>
     .default("./output")
 let outputDir = moderator.add(outputDirArgument)
 
-let interactive = moderator.add(.option("i","interactive", description: "Interactive mode. Script will ask about missing important parameters"))
+let interactive = moderator.add(.option("i", "interactive", description: "Interactive mode. Script will ask about missing important parameters"))
 let files = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
-
-
 
 do {
     try moderator.parse()

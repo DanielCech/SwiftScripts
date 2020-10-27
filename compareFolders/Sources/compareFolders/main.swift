@@ -1,5 +1,5 @@
-import Foundation
 import Files
+import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
@@ -13,7 +13,6 @@ struct ComparisonSetup {
 }
 
 func compare(source sourceFolder: Folder, target targetFolder: Folder, comparisonSetup: ComparisonSetup) throws {
-    
     for sourceFile in sourceFolder.findFiles(regex: ".*") {
         let results = targetFolder.findFiles(name: sourceFile.name)
         if results.isEmpty {
@@ -31,27 +30,27 @@ func compare(source sourceFolder: Folder, target targetFolder: Folder, compariso
             }
             continue
         }
-        
+
         if comparisonSetup.ignoreDifferences { continue }
-        
+
         let targetFile = results[0]
-        
+
         let sourceFileURL = URL(fileURLWithPath: sourceFile.path)
         let sourceFileData = try Data(contentsOf: sourceFileURL)
-        
+
         let targetFileURL = URL(fileURLWithPath: targetFile.path)
         let targetFileData = try Data(contentsOf: targetFileURL)
-        
+
         if sourceFileData != targetFileData {
             print("❗️ source differs from target:")
             print("    source: \(sourceFile.path)")
             print("    target: \(targetFile.path)")
-            
+
             if comparisonSetup.compareDifferences {
                 let command = "\"/Applications/Araxis Merge.app/Contents/Utilities/compare\" \"" + sourceFile.path + "\" \"" + targetFile.path + "\""
-                //print(command)
+                // print(command)
                 shell(command)
-                
+
                 print("🟢 Press any key to continue...")
                 _ = readLine()
             }
@@ -83,7 +82,7 @@ do {
         print(moderator.usagetext)
         exit(0)
     }
-    
+
     let comparisonSetup = ComparisonSetup(
         ignoreMissing: ignoreMissing.value,
         ignoreMultiple: ignoreMultiple.value,
@@ -96,14 +95,14 @@ do {
 
     let firstFolder = try Folder(path: unwrappedFirstDir)
     let secondFolder = try Folder(path: unwrappedSecondDir)
-    
+
     print("1️⃣ First to second\n")
-    
+
     try compare(source: firstFolder, target: secondFolder, comparisonSetup: comparisonSetup)
-    
+
     if !comparisonSetup.oneDirectional {
         print("\n2️⃣ Second to first\n")
-        
+
         try compare(source: secondFolder, target: firstFolder, comparisonSetup: comparisonSetup)
     }
 

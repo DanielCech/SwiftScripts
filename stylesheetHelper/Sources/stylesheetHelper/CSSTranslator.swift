@@ -19,7 +19,7 @@ func style(css textInput: String) -> String {
     for line in textInput.split(separator: "\n") {
         var lineElements = line.split(separator: ":").map { String($0) }
         lineElements = lineElements.map { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: ";"))) }
-        
+
         switch lineElements[0] {
         case "font-family":
             fontName = lineElements[1]
@@ -29,7 +29,7 @@ func style(css textInput: String) -> String {
                 fontName = nameParts.joined(separator: "")
             }
             fontName = fontName?.replacingOccurrences(of: "-", with: "").decapitalizingFirstLetter()
-            
+
         case "font-weight":
             fontWeight = lineElements[1]
             if fontWeight == "normal" {
@@ -59,41 +59,38 @@ func style(css textInput: String) -> String {
     if fontWeight == nil {
         fontWeight = ""
     }
-    
+
     if let unwrappedLineHeight = lineHeight,
         let unwrappedFontSize = fontSize,
         let lineHeightFloat = Float(unwrappedLineHeight),
-        let fontSizeFloat = Float(unwrappedFontSize)
-    {
+        let fontSizeFloat = Float(unwrappedFontSize) {
         lineHeight = String(Double(lineHeightFloat / fontSizeFloat).rounded(toPlaces: 2))
     }
     else {
         lineHeight = nil
     }
-    
+
     if letterSpacing == "0" {
         letterSpacing = nil
     }
     else if let unwrappedLetterSpacing = letterSpacing, unwrappedLetterSpacing.contains("em") {
         let stringValue = unwrappedLetterSpacing.replacingOccurrences(of: "em", with: "")
-        
+
         if
             let floatValue = Float(stringValue),
             let unwrappedFontSize = fontSize,
             let floatFontSize = Float(unwrappedFontSize) {
-            
             letterSpacing = String(Double(floatValue * floatFontSize).rounded(toPlaces: 2))
         }
         else {
             letterSpacing = nil
         }
     }
-    
+
     if
         let unwrappedColor = color?.uppercased(),
         let unwrappedColorRecord = colorPalette[unwrappedColor],
-        let unwrappedColorName = unwrappedColorRecord.first(where: { $0.appearance == .light })
-    {
+        let unwrappedColorName = unwrappedColorRecord.first(where: { $0.appearance == .light }) {
         color = unwrappedColorName.name
     }
     else {
@@ -102,7 +99,7 @@ func style(css textInput: String) -> String {
 
     // Formatting output
     var elements = [String]()
-    
+
     if let unwrappedFontName = fontName, let unwrappedFontWeight = fontWeight, let unwrappedFontSize = fontSize {
         elements.append("fontStyle(R.font.\(unwrappedFontName)\(unwrappedFontWeight)(size: \(unwrappedFontSize))!)")
     }
@@ -114,17 +111,16 @@ func style(css textInput: String) -> String {
     if let unwrappedLineHeight = lineHeight {
         elements.append("paragraphLineHeightMultipleStyle(\(unwrappedLineHeight))")
     }
-    
+
     if let unwrappedLetterSpacing = letterSpacing {
         elements.append("kernStyle(\(unwrappedLetterSpacing))")
     }
-    
+
     if let unwrappedColor = color {
         elements.append("colorStyle(R.color.appColors.\(unwrappedColor)()!)")
     }
-    
+
     let output = "                return " + elements.joined(separator: "\n                    <> ")
 
     return output
 }
-

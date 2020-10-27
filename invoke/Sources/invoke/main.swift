@@ -1,5 +1,5 @@
-import Foundation
 import Files
+import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
@@ -20,23 +20,23 @@ do {
         print(moderator.usagetext)
         exit(0)
     }
-    
+
     print("⌚️ Processing")
-    
+
     let data = try String(contentsOfFile: unwrappedFileName, encoding: .utf8)
     let fileLines = data.components(separatedBy: .newlines)
     var updatedAction: String
-    
+
     for fileLine in fileLines {
         let absoluteFileLine = main.currentdirectory.appendingPathComponent(path: fileLine)
-        
+
         updatedAction = unwrappedAction.replacingOccurrences(of: "@param@", with: fileLine)
         updatedAction = updatedAction.replacingOccurrences(of: "@absolutepath@", with: absoluteFileLine)
-        
+
         print(updatedAction)
         shell(updatedAction)
     }
-    
+
     print("✅ Done")
 }
 catch {

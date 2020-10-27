@@ -1,11 +1,11 @@
 // MARK: - Image JSON structs
 
-import Foundation
 import AppKit
 import Files
-import SwiftShell
+import Foundation
 import Moderator
 import ScriptToolkit
+import SwiftShell
 
 enum ColorAppearance: String {
     case light
@@ -16,7 +16,7 @@ typealias ColorDefinition = (name: String, hexCode: String, appearance: ColorApp
 
 public extension String {
     func paddedToWidth(_ width: Int) -> String {
-        let length = self.count
+        let length = count
         guard length < width else {
             return self
         }
@@ -55,7 +55,6 @@ struct Appearance: Codable {
     var value: String?
 }
 
-
 /// Getting information about the app icon images
 func appColorsMetadata(iconFolder: Folder) throws -> ColorMetadata {
     let contentsFile = try iconFolder.file(named: "Contents.json")
@@ -81,9 +80,9 @@ func colorComponent(string: String) -> CGFloat {
             return 0
         }
     }
-    
+
     let floatValue: CGFloat = CGFloat((string as NSString).floatValue)
-    
+
     if floatValue <= 1 {
         return floatValue
     }
@@ -94,17 +93,17 @@ func colorComponent(string: String) -> CGFloat {
 
 func showColorDescription(name: String, colorMetadata: ColorMetadata) -> [ColorDefinition] {
     var colorDefinitions = [ColorDefinition]()
-    
+
     for color in colorMetadata.colors {
         guard let unwrappedColor = color.color else { continue }
-        
+
         let redFloat: CGFloat = colorComponent(string: unwrappedColor.components.red)
         let greenFloat: CGFloat = colorComponent(string: unwrappedColor.components.green)
         let blueFloat: CGFloat = colorComponent(string: unwrappedColor.components.blue)
         let alphaFloat: CGFloat = colorComponent(string: unwrappedColor.components.alpha)
-        
+
         let generatedColor = NSColor(deviceRed: redFloat, green: greenFloat, blue: blueFloat, alpha: alphaFloat)
-        
+
         if let appearance = color.appearances?.first, let value = appearance.value, value == "dark" {
             colorDefinitions.append((name: name, hexCode: generatedColor.toHexString().uppercased(), appearance: .dark))
         }
@@ -112,20 +111,21 @@ func showColorDescription(name: String, colorMetadata: ColorMetadata) -> [ColorD
             colorDefinitions.append((name: name, hexCode: generatedColor.toHexString().uppercased(), appearance: .light))
         }
     }
-    
+
     return colorDefinitions
 }
 
 // =======================================================
+
 // MARK: - Main script
 
 let moderator = Moderator(description: "Shows hexa codes of colors in Xcode palette.")
 moderator.usageFormText = "colorPalette <params>"
 
 let inputDir = moderator.add(Argument<String?>
-.optionWithValue("input", name: "Input directory", description: "Input directory for processing"))
+    .optionWithValue("input", name: "Input directory", description: "Input directory for processing"))
 
-let sortByHexa = moderator.add(.option("h","sortByHexa", description: "Sort colors by hexa code"))
+let sortByHexa = moderator.add(.option("h", "sortByHexa", description: "Sort colors by hexa code"))
 
 do {
     try moderator.parse()
@@ -133,24 +133,24 @@ do {
         print(moderator.usagetext)
         exit(0)
     }
-    
+
     print("⌚️ Processing")
-    
+
     let inputFolder = try Folder(path: unwrappedInputDir)
-    
+
     guard let appColorsFolder = inputFolder.findFirstFolder(name: "App Colors") else {
         throw ScriptError.argumentError(message: "App Colors folder not found in current dir and subdirs.")
     }
-    
+
     var colorDefinitions = [ColorDefinition]()
-    
+
     for folder in appColorsFolder.subfolders {
         guard folder.name.pathExtension.lowercased() == "colorset" else { continue }
         let colorMetadata = try appColorsMetadata(iconFolder: folder)
 
         colorDefinitions.append(contentsOf: showColorDescription(name: folder.nameExcludingExtension, colorMetadata: colorMetadata))
     }
-    
+
     if sortByHexa.value {
         let codeDict = Dictionary(grouping: colorDefinitions, by: { $0.hexCode })
         for key in codeDict.keys.sorted() {
@@ -169,7 +169,7 @@ do {
             }
         }
     }
-    
+
     print("✅ Done")
 }
 catch {
@@ -180,5 +180,3 @@ catch {
 
     exit(Int32(error._code))
 }
-
-

@@ -9,7 +9,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/JohnSundell/Files.git", from: "4.1.1"),
         .package(url: "https://github.com/kareman/Moderator.git", from: "0.5.1"),
-        .package(url: "https://github.com/DanielCech/ScriptToolkit.git", .branch("master")),        
+        .package(url: "https://github.com/DanielCech/ScriptToolkit.git", .branch("master")),
         .package(url: "https://github.com/kareman/SwiftShell.git", from: "5.0.1"),
         .package(url: "https://github.com/kareman/FileSmith.git", from: "0.3.0"),
     ],
@@ -18,9 +18,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "removeEmptyDirs",
-            dependencies: ["Files", "FileSmith", "SwiftShell", "ScriptToolkit", "Moderator"]),
+            dependencies: ["Files", "FileSmith", "SwiftShell", "ScriptToolkit", "Moderator"]
+        ),
         .testTarget(
             name: "removeEmptyDirsTests",
-            dependencies: ["removeEmptyDirs"]),
+            dependencies: ["removeEmptyDirs"]
+        ),
     ]
 )

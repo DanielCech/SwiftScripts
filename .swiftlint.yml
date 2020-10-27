@@ -1,0 +1,121 @@
+#
+# SwiftLint configuration file commonly used in STRV (v 0.1.2)
+#
+# Feel free to send pull request or suggest improvements!
+#
+
+
+#
+# Rule identifiers to exclude from running.
+#
+disabled_rules:
+
+#
+# Some rules are only opt-in. Find all the available rules by running: swiftlint rules
+#
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - conditional_returns_on_newline
+  - private_action
+  - private_outlet
+  - implicitly_unwrapped_optional
+  - empty_string
+  - extension_access_modifier
+  - closure_spacing
+  - fatal_error_message
+  - first_where
+  - toggle_bool
+  - modifier_order
+  - contains_over_first_not_nil
+  - convenience_type
+  - fallthrough
+  - unused_import
+  - unavailable_function
+  - strict_fileprivate
+  - explicit_init
+  - redundant_objc_attribute
+  - unowned_variable_capture
+  - strong_iboutlet
+
+#
+# Paths to include during linting. `--path` is ignored if present.
+#
+included:
+
+statement_position:
+  statement_mode: uncuddled_else
+
+#
+# Paths to ignore during linting. Takes precedence over `included`.
+#
+excluded:
+  - Carthage
+  - Pods
+  - Tests
+  - Scripts
+  - vendor
+  - fastlane
+  - R.generated.swift
+  - /**/.build
+  - /**/.git
+
+#
+# Configure individual rules below.
+#
+vertical_whitespace:
+  max_empty_lines: 2
+
+force_cast: error
+
+identifier_name:
+  excluded:
+    - id
+
+empty_count: warning
+
+trailing_whitespace:
+  ignores_empty_lines: true
+
+line_length:
+  ignores_function_declarations: true
+  ignores_comments: true
+  ignores_urls: true
+  error: 300
+  warning: 200
+
+function_body_length:
+  error: 150
+  warning: 100
+
+type_body_length:
+  error: 900
+  warning: 600
+
+file_length:
+  error: 1000
+  warning: 700
+
+
+# Custom rules definitions
+custom_rules:
+  comments_space: # From https://github.com/brandenr/swiftlintconfig
+    name: "Space After Comment"
+    regex: "(^ *//\\w+)"
+    message: "There should be a space after //"
+    severity: warning
+
+  force_https: # From https://github.com/Twigz/Game
+    name: "Force HTTPS over HTTP"
+    regex: "((?i)http(?!s))"
+    match_kinds: string
+    message: "HTTPS should be favored over HTTP"
+    severity: warning
+
+  double_space: # From https://github.com/IBM-Swift/Package-Builder
+    include: "*.swift"
+    name: "Double space"
+    regex: "([a-z,A-Z] \\s+)"
+    message: "Double space between keywords"
+    match_kinds: keyword
+    severity: warning

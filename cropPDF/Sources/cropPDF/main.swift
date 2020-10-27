@@ -1,9 +1,8 @@
-import Foundation
 import Files
+import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
-
 
 let moderator = Moderator(description: "CropPDF - Crop pdf insets for practising on iPad")
 
@@ -18,7 +17,6 @@ let outputDir = moderator.add(outputDirArgument)
 
 let files = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
 
-
 do {
     try moderator.parse()
 
@@ -32,7 +30,7 @@ do {
     print("⌚️ Processing")
 
     try Folder.root.createSubfolderIfNeeded(at: outputDir.value)
-    
+
     let outputFolder = try Folder(path: outputDir.value)
 
     for item in files.value {

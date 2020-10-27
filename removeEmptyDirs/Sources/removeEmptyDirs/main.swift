@@ -1,12 +1,11 @@
 import Foundation
 
-import Foundation
 import Files
+import FileSmith
+import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
-import FileSmith
-
 
 let moderator = Moderator(description: "Removes empty dirs in directory and its subdirectories")
 moderator.usageFormText = "removeemptydirs <params>"

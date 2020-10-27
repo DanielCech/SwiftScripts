@@ -1,5 +1,5 @@
-import Foundation
 import Files
+import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
@@ -13,7 +13,6 @@ let outputDirArgument = Argument<String?>
 let outputDir = moderator.add(outputDirArgument)
 
 let files = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
-
 
 do {
     try moderator.parse()

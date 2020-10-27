@@ -1,12 +1,12 @@
-import Foundation
 import Files
+import Foundation
 import Moderator
 import ScriptToolkit
 
 let moderator = Moderator(description: "Flatten directory structure and make long file names.")
 moderator.usageFormText = "flatten <params>"
 
-let move = moderator.add(.option("m","move", description: "Move files from source folder"))
+let move = moderator.add(.option("m", "move", description: "Move files from source folder"))
 let inputDir = moderator.add(Argument<String?>
     .optionWithValue("input", name: "Input directory", description: "Input directory for processing"))
 let outputDir = moderator.add(Argument<String?>

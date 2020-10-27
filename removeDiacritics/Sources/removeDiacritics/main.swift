@@ -1,9 +1,9 @@
-import Foundation
 import Files
+import FileSmith
+import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
-import FileSmith
 
 private func changeName(_ text: String) -> String {
     var changedText = text
@@ -21,7 +21,7 @@ private func changeName(_ text: String) -> String {
         .replacingOccurrences(of: "ú", with: "u")
         .replacingOccurrences(of: "ý", with: "y")
         .replacingOccurrences(of: "ž", with: "z")
-    
+
     changedText = changedText
         .replacingOccurrences(of: "Á", with: "A")
         .replacingOccurrences(of: "Č", with: "C")
@@ -37,13 +37,13 @@ private func changeName(_ text: String) -> String {
         .replacingOccurrences(of: "Ú", with: "U")
         .replacingOccurrences(of: "Ý", with: "Y")
         .replacingOccurrences(of: "Ž", with: "Z")
-    
+
     return changedText
 }
 
 extension Folder {
     func removeDiacritics() throws {
-        for folder in self.subfolders {
+        for folder in subfolders {
             let oldName = folder.nameExcludingExtension
             let newName = changeName(oldName)
             if oldName != newName {
@@ -51,8 +51,8 @@ extension Folder {
                 try folder.rename(to: newName, keepExtension: true)
             }
         }
-        
-        for file in self.files {
+
+        for file in files {
             let oldName = file.nameExcludingExtension
             let newName = changeName(oldName)
             if oldName != newName {
@@ -62,8 +62,6 @@ extension Folder {
         }
     }
 }
-
-
 
 let moderator = Moderator(description: "removes diactitics from filenames in current directory")
 
