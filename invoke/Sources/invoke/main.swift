@@ -4,6 +4,24 @@ import Moderator
 import ScriptToolkit
 import SwiftShell
 
+/// Run shell command in bash
+@discardableResult public func shell(_ command: String) -> String {
+    let task = Process()
+    let pipe = Pipe()
+
+    task.standardOutput = pipe
+    task.arguments = ["-c", command]
+    task.launchPath = "/bin/bash"
+    task.launch()
+
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    let output = String(data: data, encoding: .utf8)!
+
+    return output
+}
+
+
+
 let moderator = Moderator(description: "Invoke shell command with argument from file or command line")
 moderator.usageFormText = "invoke <params>"
 
