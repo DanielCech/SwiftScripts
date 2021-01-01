@@ -28,8 +28,8 @@ func processFile(file: String, action: String) {
     updatedAction = action.replacingOccurrences(of: "@param@", with: file)
     updatedAction = updatedAction.replacingOccurrences(of: "@absolutepath@", with: absoluteFileLine)
 
-    print(action)
-    shell(action)
+    print(updatedAction)
+    shell(updatedAction)
 }
 
 
