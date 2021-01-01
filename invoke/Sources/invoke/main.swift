@@ -21,6 +21,17 @@ import SwiftShell
 }
 
 
+func processFile(file: String, action: String) {
+    let absoluteFileLine = main.currentdirectory.appendingPathComponent(path: file)
+    
+    var updatedAction: String
+    updatedAction = action.replacingOccurrences(of: "@param@", with: file)
+    updatedAction = updatedAction.replacingOccurrences(of: "@absolutepath@", with: absoluteFileLine)
+
+    print(action)
+    shell(action)
+}
+
 
 let moderator = Moderator(description: "Invoke shell command with argument from file or command line")
 moderator.usageFormText = "invoke <params>"
@@ -31,28 +42,46 @@ let action = moderator.add(Argument<String?>
 let fileName = moderator.add(Argument<String?>
     .optionWithValue("file", name: "File with parameter values on each line", description: ""))
 
+//let fileNames = moderator.add(Argument<String?>.optionWithValue(name: "files", description: "List of files from command line").repeat())
+
+let fileNames = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
+    
 do {
     try moderator.parse()
 
-    guard let unwrappedFileName = fileName.value, let unwrappedAction = action.value else {
+    if fileName.value == nil && fileNames.value.isEmpty {
         print(moderator.usagetext)
         exit(0)
     }
+    
+    var fileAction: String
+    if let unwrappedAction = action.value {
+        fileAction = unwrappedAction
+    }
+    else {
+        print("❔ Enter 'action': ", terminator: "")
+        if let input = readLine() {
+            fileAction = input
+        }
+        else {
+            throw ScriptError.argumentError(message: "Invalid value for parameter action")
+        }
+    }
 
     print("⌚️ Processing")
+    
+    if let unwrappedFileName = fileName.value {
+        let data = try String(contentsOfFile: unwrappedFileName, encoding: .utf8)
+        let fileLines = data.components(separatedBy: .newlines)
 
-    let data = try String(contentsOfFile: unwrappedFileName, encoding: .utf8)
-    let fileLines = data.components(separatedBy: .newlines)
-    var updatedAction: String
-
-    for fileLine in fileLines {
-        let absoluteFileLine = main.currentdirectory.appendingPathComponent(path: fileLine)
-
-        updatedAction = unwrappedAction.replacingOccurrences(of: "@param@", with: fileLine)
-        updatedAction = updatedAction.replacingOccurrences(of: "@absolutepath@", with: absoluteFileLine)
-
-        print(updatedAction)
-        shell(updatedAction)
+        for fileLine in fileLines {
+            processFile(file: fileLine, action: fileAction)
+        }
+    }
+    else {
+        for file in fileNames.value {
+            processFile(file: file, action: fileAction)
+        }
     }
 
     print("✅ Done")
