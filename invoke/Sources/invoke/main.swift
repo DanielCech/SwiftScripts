@@ -10,7 +10,7 @@ import SwiftShell
     let pipe = Pipe()
 
     task.standardOutput = pipe
-    task.arguments = ["-c", command]
+    task.arguments = ["-c", "\"\(command)\""]
     task.launchPath = "/bin/bash"
     task.launch()
 
@@ -22,19 +22,26 @@ import SwiftShell
 
 
 func processFile(file: String, action: String) {
-    let absoluteFile = main.currentdirectory.appendingPathComponent(path: file)
+    let absoluteFile: String
+    if file.isAbsolutePath {
+        absoluteFile = file
+    }
+    else {
+        absoluteFile = main.currentdirectory.appendingPathComponent(path: file)
+    }
+    
     let absoluteFileNoExt = absoluteFile.deletingPathExtension
     let localFile = file.lastPathComponent
     let localFileNoExt = localFile.deletingPathExtension
     let ext = file.pathExtension
     
     var updatedAction: String
-    updatedAction = action.replacingOccurrences(of: "@file@", with: file)
-    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFile@", with: absoluteFile)
-    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFileNoExt@", with: absoluteFileNoExt)
-    updatedAction = updatedAction.replacingOccurrences(of: "@localFile@", with: localFile)
-    updatedAction = updatedAction.replacingOccurrences(of: "@localFileNoExt@", with: localFileNoExt)
-    updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: ext)
+    updatedAction = action.replacingOccurrences(of: "@file@", with: "\"\(file)\"")
+    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFile@", with: "\\\"\(absoluteFile)\\\"")
+    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFileNoExt@", with: "\\\"\(absoluteFileNoExt)\\\"")
+    updatedAction = updatedAction.replacingOccurrences(of: "@localFile@", with: "\\\"\(localFile)\\\"")
+    updatedAction = updatedAction.replacingOccurrences(of: "@localFileNoExt@", with: "\\\"\(localFileNoExt)\\\"")
+    updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: "\\\"\(ext)\\\"")
 
     print(updatedAction)
     shell(updatedAction)
