@@ -5,18 +5,8 @@ import ScriptToolkit
 import SwiftShell
 
 /// Run shell command in bash
-@discardableResult public func shell(_ command: String) -> String {
+public func runShell(_ command: String) {
     let task = Process()
-//    let outputPipe = Pipe()
-//    let errorPipe = Pipe()
-
-//    task.standardOutput = outputPipe
-//    task.standardError = errorPipe
-
-    // task.arguments = ["-c"] + (command.split(separator: " ").map { String($0) })
-    
-    // Fungujici
-    //task.arguments = ["-c", "/usr/local/bin/ffmpeg -i \"/Users/dan/Documents/Temp/Process/Aeroplane.mp3\" \"/Users/dan/Documents/Temp/Process/Aeroplane.wav\""]
     
     task.arguments = ["-c", command]
     
@@ -26,25 +16,10 @@ import SwiftShell
     
     task.launchPath = "/bin/bash"
     try? task.run()
-    
-//    print("Continue?")
-//    readLine()
-
-//    let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-//    let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-//
-//    let output = String(decoding: outputData, as: UTF8.self)
-//    let error = String(decoding: errorData, as: UTF8.self)
-//
-//    print("Output:\n \(output)")
-//
-//    print("ErrorOutput:\n \(error)")
-
-    return ""
 }
 
 
-func process(path: String, action: String) {
+func process(path: String, action: String) -> String {
     let absolutePath: String
     if path.isAbsolutePath {
         absolutePath = path
@@ -65,9 +40,17 @@ func process(path: String, action: String) {
     updatedAction = updatedAction.replacingOccurrences(of: "@localPath@", with: localPath)
     updatedAction = updatedAction.replacingOccurrences(of: "@localPathNoExt@", with: localPathNoExt)
     updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: ext)
+    
+    return updatedAction + "\n\n"
+}
 
-    print(updatedAction)
-    shell(updatedAction)
+func saveAndRun(_ script: String) throws {
+    let homeFolder = FileManager.default.homeDirectoryForCurrentUser
+    let scriptFile = homeFolder.appendingPathComponent("invoke.sh")
+    
+    try script.write(to: scriptFile, atomically: true, encoding: .utf8)
+    
+    runShell(scriptFile.path)
 }
 
 
@@ -79,8 +62,6 @@ let action = moderator.add(Argument<String?>
 
 let fileName = moderator.add(Argument<String?>
     .optionWithValue("file", name: "File with parameter values on each line;\n      You can specify files as normal parameters", description: ""))
-
-//let fileNames = moderator.add(Argument<String?>.optionWithValue(name: "files", description: "List of files from command line").repeat())
 
 let fileNames = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
     
@@ -108,20 +89,25 @@ do {
 
     print("⌚️ Processing")
     
+    var script = "#! /bin/sh\n\n"
+    
     if let unwrappedFileName = fileName.value {
         let data = try String(contentsOfFile: unwrappedFileName, encoding: .utf8)
         let fileLines = data.components(separatedBy: .newlines)
 
         for fileLine in fileLines {
-            process(path: fileLine, action: fileAction)
+            script += process(path: fileLine, action: fileAction)
         }
     }
     else {
         for file in fileNames.value {
-            process(path: file, action: fileAction)
+            script += process(path: file, action: fileAction)
         }
     }
 
+    print(script)
+    try saveAndRun(script)
+    
     print("✅ Done")
 }
 catch {
