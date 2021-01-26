@@ -9,12 +9,8 @@ public func runShell(_ command: String) {
     let task = Process()
     
     task.arguments = ["-c", command]
-    
-    print("/usr/local/bin/ffmpeg -i \"/Users/dan/Documents/Temp/Process/Aeroplane.mp3\" \"/Users/dan/Documents/Temp/Process/Aeroplane.wav\"")
-    print(command)
-    print(command == "/usr/local/bin/ffmpeg -i \"/Users/dan/Documents/Temp/Process/Aeroplane.mp3\" \"/Users/dan/Documents/Temp/Process/Aeroplane.wav\"")
-    
     task.launchPath = "/bin/bash"
+    
     try? task.run()
 }
 
