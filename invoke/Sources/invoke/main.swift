@@ -7,8 +7,8 @@ import SwiftShell
 /// Run shell command in bash
 @discardableResult public func shell(_ command: String) -> String {
     let task = Process()
-    let outputPipe = Pipe()
-    let errorPipe = Pipe()
+//    let outputPipe = Pipe()
+//    let errorPipe = Pipe()
 
 //    task.standardOutput = outputPipe
 //    task.standardError = errorPipe
@@ -26,6 +26,9 @@ import SwiftShell
     
     task.launchPath = "/bin/bash"
     try? task.run()
+    
+//    print("Continue?")
+//    readLine()
 
 //    let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
 //    let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
@@ -41,26 +44,26 @@ import SwiftShell
 }
 
 
-func processFile(file: String, action: String) {
-    let absoluteFile: String
-    if file.isAbsolutePath {
-        absoluteFile = file
+func process(path: String, action: String) {
+    let absolutePath: String
+    if path.isAbsolutePath {
+        absolutePath = path
     }
     else {
-        absoluteFile = main.currentdirectory.appendingPathComponent(path: file)
+        absolutePath = main.currentdirectory.appendingPathComponent(path: path)
     }
     
-    let absoluteFileNoExt = absoluteFile.deletingPathExtension
-    let localFile = file.lastPathComponent
-    let localFileNoExt = localFile.deletingPathExtension
-    let ext = file.pathExtension
+    let absolutePathNoExt = absolutePath.deletingPathExtension
+    let localPath = path.lastPathComponent
+    let localPathNoExt = localPath.deletingPathExtension
+    let ext = path.pathExtension
     
     var updatedAction: String
-    updatedAction = action.replacingOccurrences(of: "@file@", with: file)
-    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFile@", with: absoluteFile)
-    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFileNoExt@", with: absoluteFileNoExt)
-    updatedAction = updatedAction.replacingOccurrences(of: "@localFile@", with: localFile)
-    updatedAction = updatedAction.replacingOccurrences(of: "@localFileNoExt@", with: localFileNoExt)
+    updatedAction = action.replacingOccurrences(of: "@path@", with: path)
+    updatedAction = updatedAction.replacingOccurrences(of: "@absolutePath@", with: absolutePath)
+    updatedAction = updatedAction.replacingOccurrences(of: "@absolutePathNoExt@", with: absolutePathNoExt)
+    updatedAction = updatedAction.replacingOccurrences(of: "@localPath@", with: localPath)
+    updatedAction = updatedAction.replacingOccurrences(of: "@localPathNoExt@", with: localPathNoExt)
     updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: ext)
 
     print(updatedAction)
@@ -110,12 +113,12 @@ do {
         let fileLines = data.components(separatedBy: .newlines)
 
         for fileLine in fileLines {
-            processFile(file: fileLine, action: fileAction)
+            process(path: fileLine, action: fileAction)
         }
     }
     else {
         for file in fileNames.value {
-            processFile(file: file, action: fileAction)
+            process(path: file, action: fileAction)
         }
     }
 
