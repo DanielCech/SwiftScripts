@@ -7,17 +7,37 @@ import SwiftShell
 /// Run shell command in bash
 @discardableResult public func shell(_ command: String) -> String {
     let task = Process()
-    let pipe = Pipe()
+    let outputPipe = Pipe()
+    let errorPipe = Pipe()
 
-    task.standardOutput = pipe
-    task.arguments = ["-c", "\"\(command)\""]
+//    task.standardOutput = outputPipe
+//    task.standardError = errorPipe
+
+    // task.arguments = ["-c"] + (command.split(separator: " ").map { String($0) })
+    
+    // Fungujici
+    //task.arguments = ["-c", "/usr/local/bin/ffmpeg -i \"/Users/dan/Documents/Temp/Process/Aeroplane.mp3\" \"/Users/dan/Documents/Temp/Process/Aeroplane.wav\""]
+    
+    task.arguments = ["-c", command]
+    
+    print("/usr/local/bin/ffmpeg -i \"/Users/dan/Documents/Temp/Process/Aeroplane.mp3\" \"/Users/dan/Documents/Temp/Process/Aeroplane.wav\"")
+    print(command)
+    print(command == "/usr/local/bin/ffmpeg -i \"/Users/dan/Documents/Temp/Process/Aeroplane.mp3\" \"/Users/dan/Documents/Temp/Process/Aeroplane.wav\"")
+    
     task.launchPath = "/bin/bash"
-    task.launch()
+    try? task.run()
 
-    let data = pipe.fileHandleForReading.readDataToEndOfFile()
-    let output = String(data: data, encoding: .utf8)!
+//    let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+//    let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+//
+//    let output = String(decoding: outputData, as: UTF8.self)
+//    let error = String(decoding: errorData, as: UTF8.self)
+//
+//    print("Output:\n \(output)")
+//
+//    print("ErrorOutput:\n \(error)")
 
-    return output
+    return ""
 }
 
 
@@ -36,12 +56,12 @@ func processFile(file: String, action: String) {
     let ext = file.pathExtension
     
     var updatedAction: String
-    updatedAction = action.replacingOccurrences(of: "@file@", with: "\"\(file)\"")
-    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFile@", with: "\\\"\(absoluteFile)\\\"")
-    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFileNoExt@", with: "\\\"\(absoluteFileNoExt)\\\"")
-    updatedAction = updatedAction.replacingOccurrences(of: "@localFile@", with: "\\\"\(localFile)\\\"")
-    updatedAction = updatedAction.replacingOccurrences(of: "@localFileNoExt@", with: "\\\"\(localFileNoExt)\\\"")
-    updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: "\\\"\(ext)\\\"")
+    updatedAction = action.replacingOccurrences(of: "@file@", with: file)
+    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFile@", with: absoluteFile)
+    updatedAction = updatedAction.replacingOccurrences(of: "@absoluteFileNoExt@", with: absoluteFileNoExt)
+    updatedAction = updatedAction.replacingOccurrences(of: "@localFile@", with: localFile)
+    updatedAction = updatedAction.replacingOccurrences(of: "@localFileNoExt@", with: localFileNoExt)
+    updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: ext)
 
     print(updatedAction)
     shell(updatedAction)

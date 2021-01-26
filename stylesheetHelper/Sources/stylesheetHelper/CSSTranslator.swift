@@ -124,7 +124,7 @@ func style(css textInput: String) -> String {
         elements.append("colorStyle(R.color.appColors.\(unwrappedColor)()!)")
     }
     
-    let output = "return " + elements.joined(separator: "\n    <> ")
+    let output = "            return " + elements.joined(separator: "\n                <> ")
     
     return output
 }

@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "invoke",
+    platforms: [
+        .macOS(.v10_14),
+    ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/JohnSundell/Files.git", from: "4.1.1"),
