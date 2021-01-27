@@ -114,10 +114,13 @@ Usage: invoke <params>
 ```
 
 *Examples:*
+
 Conversion of audio file do .wav
+
 `$ invoke --action "/usr/local/bin/ffmpeg -i \"@absolutePath@\" \"@absolutePathNoExt@.wav\"" <files>`
 
 Adding 4s of silence at the beginning of selected audio files
+
 `$ invoke --action "ffmpeg -i \"@absolutePath@\" -af \"adelay=4000|4000\" \"@absolutePathNoExt@.out.wav\"" <files>`
 
 ## iOS Development
