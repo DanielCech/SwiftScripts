@@ -97,14 +97,28 @@ RenameEpisodes script uses free Open Movie Database (OMDb) for obtaining the nam
 
 ### invoke
 
-Invoke shell command with substituted argument from each line of input file. 
+Invoke is shell command which is very handy when you need to call some shell script on set of files. It will call the shell script separately for each file. When you call `install.sh`, it will copy the binary to _/usr/local/bin_ and it creates empty script _invoke.sh_ in home folder and make it executable. The script _invoke.sh_ is used for sequence of generated shell calls. The set of files can be easily dragged from Finder or Forklift to the shell.
 
 ```
 Usage: invoke <params>
   --action <Shell action to run>:
-      Use @param@, @absolutepath@ (using absolute path with argument)
-  --file <File with parameter values on each line>:
+      Use @file@ - original file,
+      @absoluteFile@ - file with absolute path
+      @absoluteFileNoExt@ - file with absolute path without extension
+      @localFile@ - file without path
+      @localFileNoExt@ - file without path and extension
+      @ext@ - the extension of file
+  --file <File with parameter values on each line;
+      You can specify files as normal parameters>:
+¨
 ```
+
+*Examples:*
+Conversion of audio file do .wav
+`$ invoke --action "/usr/local/bin/ffmpeg -i \"@absolutePath@\" \"@absolutePathNoExt@.wav\"" <files>`
+
+Adding 4s of silence at the beginning of selected audio files
+`$ invoke --action "ffmpeg -i \"@absolutePath@\" -af \"adelay=4000|4000\" \"@absolutePathNoExt@.out.wav\"" <files>`
 
 ## iOS Development
 
