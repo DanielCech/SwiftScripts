@@ -16,7 +16,7 @@ Usage: tag <params> <file or dir>
   -c,--copy:
       Tags copy of the file
 ```
-Install with `brew install DanielCech/scripts/tag'
+Install with `brew install DanielCech/scripts/tag`
 
 -----------------------------------------------------------
 
@@ -73,7 +73,7 @@ Usage: sortPhotos <params>
 
 Sort photos uses EXIFtool for sorting photos based on date or camera type. Currently different formats have different EXIFtool information - DateTimeOrigina, DateCreated, ContentCreateDate, CreationDate, ... M4V files often contain no EXIF info and script tries to sort those files to folders based on the file name.
 
-Install with `brew install DanielCech/scripts/sortphotos'
+Install with `brew install DanielCech/scripts/sortphotos`
 
 -----------------------------------------------------------
 
@@ -96,7 +96,7 @@ Usage: renameepisodes
 
 RenameEpisodes script uses free Open Movie Database (OMDb) for obtaining the names of episodes.
 
-Install with `brew install DanielCech/scripts/renameepisodes'
+Install with `brew install DanielCech/scripts/renameepisodes`
 
 -----------------------------------------------------------
 
@@ -128,7 +128,7 @@ Adding 4s of silence at the beginning of selected audio files
 
 `$ invoke --action "ffmpeg -i \"@absolutePath@\" -af \"adelay=4000|4000\" \"@absolutePathNoExt@.out.wav\"" <files>`
 
-Install with `brew install DanielCech/scripts/invoke'
+Install with `brew install DanielCech/scripts/invoke`
 
 ## iOS Development
 
@@ -206,7 +206,7 @@ Output sorted by color:
     text (light)
 ```
 
-Install with `brew install DanielCech/scripts/colorpalette'
+Install with `brew install DanielCech/scripts/colorpalette`
 
 ## Setup with Forklift
 * Script works perfectly with Forklift file manager - https://binarynights.com.
