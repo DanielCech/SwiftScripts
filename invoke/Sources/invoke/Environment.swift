@@ -49,10 +49,10 @@ func stencilEnvironment() -> Environment {
         return value
     }
     
-    // If input is not empty, the comma and space is added
-    ext.registerFilter("comma") { (value: Any?) in
-        if let value = value as? String {
-            return value.isEmpty ? "" : value + ", "
+    // First letter is decapitalized - in lowercase
+    ext.registerFilter("removeDiacritics") { (value: Any?) in
+        if let unwrappedValue = value as? String {
+            return unwrappedValue.folding(options: .diacriticInsensitive, locale: nil)
         }
 
         return value

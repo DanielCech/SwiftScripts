@@ -34,13 +34,6 @@ func process(path: String, action: String) throws -> String {
     let localPathNoExt = localPath.deletingPathExtension
     let ext = path.pathExtension
     
-//    updatedAction = action.replacingOccurrences(of: "@path@", with: path)
-//    updatedAction = updatedAction.replacingOccurrences(of: "@absolutePath@", with: absolutePath)
-//    updatedAction = updatedAction.replacingOccurrences(of: "@absolutePathNoExt@", with: absolutePathNoExt)
-//    updatedAction = updatedAction.replacingOccurrences(of: "@localPath@", with: localPath)
-//    updatedAction = updatedAction.replacingOccurrences(of: "@localPathNoExt@", with: localPathNoExt)
-//    updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: ext)
-    
     var context = [String: Any]()
     context["path"] = path
     context["absolutePath"] = absolutePath
@@ -60,7 +53,7 @@ func process(path: String, action: String) throws -> String {
         throw ScriptError.generalError(message: "Error in stencil template")
     }
     
-    return "echo \"\(path)\"\n" + updatedAction + "\n\n"
+    return "echo \"\(path):\"\n" + updatedAction + "\n\n"
 }
 
 func saveAndRun(_ script: String) throws {
@@ -69,7 +62,9 @@ func saveAndRun(_ script: String) throws {
     
     try script.write(to: scriptFile, atomically: true, encoding: .utf8)
     
-    runShell(scriptFile.path)
+    if perform.value {
+        runShell(scriptFile.path)
+    }
 }
 
 
@@ -77,7 +72,29 @@ let moderator = Moderator(description: "Invoke shell command with argument from 
 moderator.usageFormText = "invoke <params>"
 
 let action = moderator.add(Argument<String?>
-    .optionWithValue("action", name: "Shell action to run", description: "Use @file@ - original file,\n      @absolutePath@ - file with absolute path\n      @absolutePathNoExt@ - file with absolute path without extension\n      @localPath@ - file without path\n      @localPathNoExt@ - file without path and extension\n      @ext@ - the extension of file"))
+    .optionWithValue("action", name: "Shell action to run with support of Stencil language", description:
+                     """
+
+                         Variables:
+                            {{path}} - for original path,
+                            {{absolutePath}} - absolute location in file system
+                            {{absolutePathNoExt}} absolute path without extension
+                            {{localPath}} - file/folder without parent folder
+                            {{localPathNoExt}} - file/folder without parent folder and extension
+                            {{ext}} - the extension of file
+                            {{index}} - index of processed file
+
+                         Filters:
+                            capitalized
+                            decapitalized
+                            uppercased
+                            lowercased
+                            replace:what, with
+                            removeDiacritics
+
+                     """))
+
+let perform = moderator.add(.option("perform", description: "Perform the call. Without this parameter you can just test the result. The result script is in ~/invoke.sh."))
 
 let fileName = moderator.add(Argument<String?>
     .optionWithValue("file", name: "File with parameter values on each line;\n      You can specify files as normal parameters", description: ""))
