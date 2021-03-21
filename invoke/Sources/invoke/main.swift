@@ -3,6 +3,11 @@ import Foundation
 import Moderator
 import ScriptToolkit
 import SwiftShell
+import Stencil
+
+/// Stencil environment for templates
+let environment = stencilEnvironment()
+var itemIndex = 1
 
 /// Run shell command in bash
 public func runShell(_ command: String) {
@@ -15,7 +20,7 @@ public func runShell(_ command: String) {
 }
 
 
-func process(path: String, action: String) -> String {
+func process(path: String, action: String) throws -> String {
     let absolutePath: String
     if path.isAbsolutePath {
         absolutePath = path
@@ -29,15 +34,33 @@ func process(path: String, action: String) -> String {
     let localPathNoExt = localPath.deletingPathExtension
     let ext = path.pathExtension
     
-    var updatedAction: String
-    updatedAction = action.replacingOccurrences(of: "@path@", with: path)
-    updatedAction = updatedAction.replacingOccurrences(of: "@absolutePath@", with: absolutePath)
-    updatedAction = updatedAction.replacingOccurrences(of: "@absolutePathNoExt@", with: absolutePathNoExt)
-    updatedAction = updatedAction.replacingOccurrences(of: "@localPath@", with: localPath)
-    updatedAction = updatedAction.replacingOccurrences(of: "@localPathNoExt@", with: localPathNoExt)
-    updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: ext)
+//    updatedAction = action.replacingOccurrences(of: "@path@", with: path)
+//    updatedAction = updatedAction.replacingOccurrences(of: "@absolutePath@", with: absolutePath)
+//    updatedAction = updatedAction.replacingOccurrences(of: "@absolutePathNoExt@", with: absolutePathNoExt)
+//    updatedAction = updatedAction.replacingOccurrences(of: "@localPath@", with: localPath)
+//    updatedAction = updatedAction.replacingOccurrences(of: "@localPathNoExt@", with: localPathNoExt)
+//    updatedAction = updatedAction.replacingOccurrences(of: "@ext@", with: ext)
     
-    return updatedAction + "\n\n"
+    var context = [String: Any]()
+    context["path"] = path
+    context["absolutePath"] = absolutePath
+    context["absolutePathNoExt"] = absolutePathNoExt
+    context["localPath"] = localPath
+    context["localPathNoExt"] = localPathNoExt
+    context["ext"] = ext
+    context["index"] = itemIndex
+    
+    itemIndex += 1
+    
+    var updatedAction: String
+    do {
+        updatedAction = try environment.renderTemplate(string: action, context: context)
+    }
+    catch {
+        throw ScriptError.generalError(message: "Error in stencil template")
+    }
+    
+    return "echo \"\(path)\"\n" + updatedAction + "\n\n"
 }
 
 func saveAndRun(_ script: String) throws {
@@ -54,7 +77,7 @@ let moderator = Moderator(description: "Invoke shell command with argument from 
 moderator.usageFormText = "invoke <params>"
 
 let action = moderator.add(Argument<String?>
-    .optionWithValue("action", name: "Shell action to run", description: "Use @file@ - original file,\n      @absoluteFile@ - file with absolute path\n      @absoluteFileNoExt@ - file with absolute path without extension\n      @localFile@ - file without path\n      @localFileNoExt@ - file without path and extension\n      @ext@ - the extension of file"))
+    .optionWithValue("action", name: "Shell action to run", description: "Use @file@ - original file,\n      @absolutePath@ - file with absolute path\n      @absolutePathNoExt@ - file with absolute path without extension\n      @localPath@ - file without path\n      @localPathNoExt@ - file without path and extension\n      @ext@ - the extension of file"))
 
 let fileName = moderator.add(Argument<String?>
     .optionWithValue("file", name: "File with parameter values on each line;\n      You can specify files as normal parameters", description: ""))
@@ -92,12 +115,12 @@ do {
         let fileLines = data.components(separatedBy: .newlines)
 
         for fileLine in fileLines {
-            script += process(path: fileLine, action: fileAction)
+            script += try process(path: fileLine, action: fileAction)
         }
     }
     else {
         for file in fileNames.value {
-            script += process(path: file, action: fileAction)
+            script += try process(path: file, action: fileAction)
         }
     }
 
