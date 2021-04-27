@@ -7,25 +7,8 @@ import Moderator
 import ScriptToolkit
 import SwiftShell
 
-func openInterest(_ interest: String) throws -> Entry {
-    let exercisesFile = try Folder.current.file(named: "\(interest.capitalized)Exercises.json")
-
-    let jsonString = try exercisesFile.readAsString(encodedAs: .utf8)
-    let jsonData = Data(jsonString.utf8)
-
-    do {
-        
-        let entry = try JSONDecoder().decode(Entry.self, from: jsonData)
-        // make sure this JSON is in the format we expect
-//        guard let entry = try JSONSerialization.jsonObject(with: jsonData, options: []) as? Entry else {
-//            throw ScriptError.generalError(message: "Unable to read exercises json")
-//        }
-        
-        return entry
-    }
-}
-
-
+let timer = Timer()
+let scheduler = Scheduler()
 
 let moderator = Moderator(description: "Structured timer for practice")
 moderator.usageFormText = "practice-timer <params>"
@@ -33,18 +16,24 @@ moderator.usageFormText = "practice-timer <params>"
 let interest = moderator.add(Argument<String?>
     .optionWithValue("interest", name: "The area of interest", description: "It can be bass/guitar/..."))
 
-let set = moderator.add(Argument<String?>
-    .optionWithValue("set", name: "The execrise set", description: "Enter the name of set"))
+let planTypeString = moderator.add(Argument<String?>
+    .optionWithValue("plan", name: "The name of the plan", description: "The combination of exercises."))
 
 do {
     try moderator.parse()
-    guard let unwrappedInterest = interest.value else {
+    
+    guard
+        let unwrappedInterest = interest.value,
+        let unwrappedPlanTypeString = planTypeString.value
+    else {
         print(moderator.usagetext)
         exit(0)
     }
     
-    let entry = try openInterest(unwrappedInterest)
-    print(entry)
+    try scheduler.openInterest(unwrappedInterest)
+    let plan = try scheduler.preparePlan(unwrappedPlanTypeString)
+    
+    timer.play(plan)
 }
 catch {
     if let printableError = error as? PrintableError { print(printableError.errorDescription) }

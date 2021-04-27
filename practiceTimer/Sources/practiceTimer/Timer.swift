@@ -8,5 +8,7 @@
 import Foundation
 
 class Timer {
-    
+    func play(_ plan: Plan) {
+        
+    }
 }
