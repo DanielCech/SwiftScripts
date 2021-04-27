@@ -1,0 +1,52 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Files",
+        "repositoryURL": "https://github.com/JohnSundell/Files.git",
+        "state": {
+          "branch": "master",
+          "revision": "d273b5b7025d386feef79ef6bad7de762e106eaf",
+          "version": null
+        }
+      },
+      {
+        "package": "FileSmith",
+        "repositoryURL": "https://github.com/kareman/FileSmith.git",
+        "state": {
+          "branch": null,
+          "revision": "476472740a38c64634b388f2b311ec518bfa3265",
+          "version": "0.3.0"
+        }
+      },
+      {
+        "package": "ScriptToolkit",
+        "repositoryURL": "https://github.com/DanielCech/ScriptToolkit.git",
+        "state": {
+          "branch": "master",
+          "revision": "91df0690826a5bff4d987f97902c428c0dc9a3cc",
+          "version": null
+        }
+      },
+      {
+        "package": "SwiftCursesTerm",
+        "repositoryURL": "https://github.com/rderik/SwiftCursesTerm.git",
+        "state": {
+          "branch": null,
+          "revision": "bbad43ec64fef452445a416144af5103eb7d9d0d",
+          "version": "0.1.2"
+        }
+      },
+      {
+        "package": "SwiftShell",
+        "repositoryURL": "https://github.com/kareman/SwiftShell.git",
+        "state": {
+          "branch": "master",
+          "revision": "99680b2efc7c7dbcace1da0b3979d266f02e213c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

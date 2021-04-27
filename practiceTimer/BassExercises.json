@@ -1,0 +1,29 @@
+{
+    "type": "folder",
+    "items": [
+        {
+            "type": "folder",
+            "name": "Songy",
+            "items": [
+                {
+                    "type": "exercise",
+                    "name": "Vulfpeck - Dean Town" 
+                }
+            ]   
+        },
+        {
+            "type": "folder",
+            "name": "Technická cvičení",
+            "items": [
+        
+            ]   
+        },
+        {
+            "type": "folder",
+            "name": "Stupnice",
+            "items": [
+        
+            ]   
+        }
+    ]   
+}
