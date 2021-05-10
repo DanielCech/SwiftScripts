@@ -37,6 +37,8 @@ do {
     
     try exercises.openEntries()
     
+    try exercises.saveEntries()
+    
 //    // Prepare plan
 //    try scheduler.preparePlan()
 //    scheduler.presentPlan()

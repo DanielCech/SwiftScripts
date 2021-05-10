@@ -7,9 +7,12 @@
 
 import Foundation
 import Files
+import ScriptToolkit
 
 class Exercises {
-    lazy var mainEntry: Entry = { Entry() }()
+    lazy var mainEntry: Entry = { Entry(name: "Root", isFinal: false) }()
+    
+    // MARK: - Init entries
     
     func initialize() throws {
         let interestFolder = try Folder(path: Constants.mainPath).subfolder(named: interest)
@@ -21,13 +24,17 @@ class Exercises {
         let exerciseFilePath = folder.path.appendingPathComponent(path: "exercise.json")
         
         for subfolder in folder.subfolders {
+            if subfolder.name == "Ignore" {
+                continue
+            }
+            
             try initEntries(folder: subfolder)
         }
         
         let entry = Entry(
-            id: folder.path(relativeTo: Constants.mainFolder),
-            items: nil,
             name: folder.name,
+            items: nil,
+            isFinal: false,
             totalTime: nil,
             lastPracticeDate: nil,
             rating: nil,
@@ -40,12 +47,12 @@ class Exercises {
         
         let jsonData = try! encoder.encode(entry)
         let jsonString = String(data: jsonData, encoding: .utf8)!
-        print(jsonString)
         
         let exerciseFileURL = URL(fileURLWithPath: exerciseFilePath)
         try jsonString.write(to: exerciseFileURL, atomically: true, encoding: .utf8)
     }
     
+    // MARK: - Open entries
     
     func openEntries() throws {
         let interestFolder = try Folder(path: Constants.mainPath).subfolder(named: interest)
@@ -55,6 +62,10 @@ class Exercises {
     
     @discardableResult func openEntries(folder: Folder) throws -> Entry {
         let exerciseFilePath = folder.path.appendingPathComponent(path: "exercise.json")
+        
+        guard FileManager.default.locationExists(path: exerciseFilePath, kind: .file) else {
+            throw ScriptError.fileNotFound(message: exerciseFilePath)
+        }
         
         let jsonData = try Data(contentsOf: URL(fileURLWithPath: exerciseFilePath))
         var entry = try JSONDecoder().decode(Entry.self, from: jsonData)
@@ -66,15 +77,59 @@ class Exercises {
         
         var entries = [Entry]()
         
-        for subfolder in folder.subfolders {
-            entries.append(try openEntries(folder: subfolder))
+        if !entry.isFinal {
+            for subfolder in folder.subfolders {
+                if subfolder.name == "Ignore" {
+                    continue
+                }
+                
+                entries.append(try openEntries(folder: subfolder))
+            }
+            
+            entry.items = entries
         }
-        
-        entry.items = entries
-        
+    
         return entry
     }
     
+    // MARK: - Save entries
+    
+    func saveEntries() throws {
+        let interestFolder = try Folder(path: Constants.mainPath).subfolder(named: interest)
+
+        try saveEntries(folder: interestFolder, entry: mainEntry)
+    }
+    
+    func saveEntries(folder: Folder, entry: Entry) throws {
+        let exerciseFilePath = folder.path.appendingPathComponent(path: "exercise.json")
+        
+        if let unwrappedItems = entry.items {
+            for item in unwrappedItems {
+                if item.name == "Ignore" {
+                    continue
+                }
+                
+                try saveEntries(folder: folder.subfolder(named: item.name), entry: item)
+            }
+        }
+        
+        var mutableEntry = entry
+        if !mutableEntry.isFinal {
+            mutableEntry.items = nil
+        }
+        
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        
+        let jsonData = try! encoder.encode(mutableEntry)
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        
+        let exerciseFileURL = URL(fileURLWithPath: exerciseFilePath)
+        try jsonString.write(to: exerciseFileURL, atomically: true, encoding: .utf8)
+    }
+}
+
+extension Exercises {
     func openPDF(file: String, page: Int?) {
         let scriptSource: String
         

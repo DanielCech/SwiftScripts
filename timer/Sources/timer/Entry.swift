@@ -10,14 +10,14 @@ import Foundation
 
 /// Structure for practice exercise
 struct Entry: Codable {
-    /// Identifier
-    var id: String?
+    /// Name of exercise
+    var name: String
     
     /// Subitems list
     var items: [Entry]?
     
-    /// Name of exercise
-    var name: String?
+    /// This  is final folder for exercises, the subfolders won't be processed
+    var isFinal: Bool
     
     /// PDF file to open
     var pdf: String?
