@@ -7,38 +7,39 @@
 
 import Foundation
 
-enum EntryType: String, Codable {
-    case folder
-    case exercise
-}
-
 
 /// Structure for practice exercise
 struct Entry: Codable {
-    // Identifier
+    /// Identifier
     var id: String?
     
-    // Type - exercises/folder
-    var type: EntryType
-    
-    // 
+    /// Subitems list
     var items: [Entry]?
     
-    // Name of exercise
+    /// Name of exercise
     var name: String?
     
-    // Total time spent with this exercise
+    /// PDF file to open
+    var pdf: String?
+    
+    /// Open PDF on page
+    var pdfPage: String?
+    
+    /// Open media file
+    var media: String?
+    
+    /// Total time spent with this exercise
     var totalTime: TimeInterval?
     
-    // Last time when practised
+    /// Last time when practised
     var lastPracticeDate: Date?
     
-    // How good I am - 0-100%
+    /// How good I am - 0-100%
     var rating: Int?
     
-    // Expected duration of this exercise
+    /// Expected duration of this exercise
     var defaultDuration: TimeInterval?
     
-    // How important is this exercise
+    /// How important is this exercise
     var importancy: Int?
 }
