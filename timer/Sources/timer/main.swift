@@ -23,20 +23,6 @@ let planArgument = moderator.add(Argument<String?>
 
 print("⏰ Timer 0.1.0\n")
 
-
-let scriptSource =
-    """
-    tell application "Adobe Acrobat Reader DC"
-        open POSIX file "{{file}}" options "page={{page}}"
-    end tell
-    """
-    .replacingOccurrences(of: "{{file}}", with: file)
-    .replacingOccurrences(of: "{{page}}", with: String(page))
-
-let script = NSAppleScript(source: scriptSource)
-script?.executeAndReturnError(nil)
-
-
 do {
     try moderator.parse()
     
