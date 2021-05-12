@@ -1,14 +1,3 @@
-//
-//  Timer.swift
-//  practiceTimer
-//
-//  Created by Daniel Cech on 27/04/2021.
-//
-
-import Foundation
-
-class Timer {
-    func play(_ plan: Plan) {
-        
-    }
+struct Timer {
+    var text = "Hello, World!"
 }

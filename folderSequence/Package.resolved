@@ -29,15 +29,6 @@
         }
       },
       {
-        "package": "SwiftCursesTerm",
-        "repositoryURL": "https://github.com/rderik/SwiftCursesTerm.git",
-        "state": {
-          "branch": null,
-          "revision": "bbad43ec64fef452445a416144af5103eb7d9d0d",
-          "version": "0.1.2"
-        }
-      },
-      {
         "package": "SwiftShell",
         "repositoryURL": "https://github.com/kareman/SwiftShell.git",
         "state": {

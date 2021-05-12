@@ -1,7 +1,7 @@
 import XCTest
 
-import timerTests
+import TimerTests
 
 var tests = [XCTestCaseEntry]()
-tests += timerTests.allTests()
+tests += TimerTests.allTests()
 XCTMain(tests)
