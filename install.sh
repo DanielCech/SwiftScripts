@@ -13,3 +13,4 @@ cp -fi renameEpisodes/Bin/renameEpisodes /usr/local/bin
 cp -fi resize/Bin/resize /usr/local/bin
 cp -fi sortPhotos/Bin/sortPhotos /usr/local/bin
 cp -fi tag/Bin/tag /usr/local/bin
+cp -fi eject-all.sh /usr/local/bin

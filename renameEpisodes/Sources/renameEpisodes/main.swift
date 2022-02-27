@@ -75,7 +75,7 @@ extension File {
         print("  -> \(newName)")
 
         if renameFiles {
-            try rename(to: newName)
+            try? rename(to: newName)
         }
 
         return true
