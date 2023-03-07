@@ -144,11 +144,25 @@ func performRenames(inputDir: String, renameFiles: Bool) throws {
 func renameSeries(name seriesName: String, season: Int, inputDir: String, renameFiles: Bool) {
     print("🔦 Downloading info about season \(season)")
 
-    let url = "http://www.omdbapi.com/?apikey=d1b21f08&type=series&t=\(seriesName)&Season=\(season)"
-
-    Alamofire.request(url).response { response in
+    let url = "http://www.omdbapi.com/?t=\(seriesName)&plot=full&apikey=d1b21f08"
+    
+    let headers: HTTPHeaders = [
+      "Accept": "text/plain, */*; q=0.01",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "cs-CZ,cs;q=0.9",
+      "Referer": "http://www.omdbapi.com/"
+    ]
+    
+    let request = Alamofire.request(url, headers: headers)
+    
+    
+    
+    request.response { response in
         if let data = response.data {
-            let seasonInfo = try! JSONDecoder().decode(Season.self, from: data)
+            guard let seasonInfo = try? JSONDecoder().decode(Season.self, from: data) else {
+                print(String(data: data, encoding: .utf8)!)
+                return
+            }
 
             seriesInfo[season] = seasonInfo
 
