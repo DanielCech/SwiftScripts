@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "generate",
+    name: "pharoCall",
     platforms: [
             .macOS(.v10_15)
         ],
@@ -20,12 +20,12 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "generate",
+            name: "pharoCall",
             dependencies: ["Files", "FileSmith", "SwiftShell", "ScriptToolkit", "Moderator"]
         ),
         .testTarget(
-            name: "generateTests",
-            dependencies: ["generate"]
+            name: "pharoCallTests",
+            dependencies: ["pharoCall"]
         ),
     ]
 )
