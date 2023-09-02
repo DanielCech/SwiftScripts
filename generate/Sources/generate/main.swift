@@ -24,7 +24,7 @@ do {
         exit(0)
     }
     
-    let pharoFile = "/Users/danielcech/ExternalCode.pharo"
+    let pharoFile = "/Users/danielcech/ExternalCode.st"
     let command = "CodeTemplater generate: '\(sourcePath)' withTemplate: '\(templatePath)'."
     try command.write(toFile: pharoFile, atomically: true, encoding: .utf8)
     
