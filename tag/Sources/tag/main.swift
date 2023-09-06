@@ -10,9 +10,6 @@ moderator.usageFormText = "tag <params> <files or dirs>"
 let onCopy = moderator.add(.option("c", "copy", description: "Tags copy of the file"))
 let filesAndDirs = moderator.add(Argument<String?>.singleArgument(name: "multiple").repeat())
 
-moderator.add(Argument<String?>
-                .singleArgument(name: "install", description: "Instalation of environment")
-
 do {
     try moderator.parse()
     guard !filesAndDirs.value.isEmpty else {
@@ -29,9 +26,6 @@ do {
         case .folder:
             let folder = try Folder(path: item)
             try folder.tag(copy: onCopy.value)
-
-        default:
-            continue
         }
     }
 }
