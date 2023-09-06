@@ -18,14 +18,14 @@ do {
     }
 
     for item in filesAndDirs.value {
-        switch FileManager.default.locationKind(for: item) {
-        case .file:
+        do {
             let file = try File(path: item)
             try file.tag(copy: onCopy.value)
-
-        case .folder:
-            let folder = try Folder(path: item)
-            try folder.tag(copy: onCopy.value)
+        } catch {
+            do {
+                let folder = try Folder(path: item)
+                try folder.tag(copy: onCopy.value)
+            } catch {}
         }
     }
 }
