@@ -1,0 +1,61 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Files",
+        "repositoryURL": "https://github.com/JohnSundell/Files.git",
+        "state": {
+          "branch": "master",
+          "revision": "d273b5b7025d386feef79ef6bad7de762e106eaf",
+          "version": null
+        }
+      },
+      {
+        "package": "FileSmith",
+        "repositoryURL": "https://github.com/kareman/FileSmith.git",
+        "state": {
+          "branch": null,
+          "revision": "476472740a38c64634b388f2b311ec518bfa3265",
+          "version": "0.3.0"
+        }
+      },
+      {
+        "package": "Rainbow",
+        "repositoryURL": "https://github.com/onevcat/Rainbow.git",
+        "state": {
+          "branch": null,
+          "revision": "e0dada9cd44e3fa7ec3b867e49a8ddbf543e3df3",
+          "version": "4.0.1"
+        }
+      },
+      {
+        "package": "ScriptToolkit",
+        "repositoryURL": "https://github.com/DanielCech/ScriptToolkit.git",
+        "state": {
+          "branch": "master",
+          "revision": "5460b384a8f660f90b879d6b297ee7dce0553f0d",
+          "version": null
+        }
+      },
+      {
+        "package": "SwiftShell",
+        "repositoryURL": "https://github.com/kareman/SwiftShell.git",
+        "state": {
+          "branch": "master",
+          "revision": "99680b2efc7c7dbcace1da0b3979d266f02e213c",
+          "version": null
+        }
+      },
+      {
+        "package": "Yaml",
+        "repositoryURL": "https://github.com/behrang/YamlSwift.git",
+        "state": {
+          "branch": "master",
+          "revision": "063286d0a66200b6ae0687c06914b19fe7c8dc83",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
