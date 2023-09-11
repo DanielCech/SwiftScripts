@@ -34,7 +34,7 @@ do {
         exit(0)
     }
     
-    let pharoFile = "/Users/danielcech/ExternalCode.st"
+    let pharoFile = "/Users/danielcech/pharoExternalCode.st"
     let commandText = "ExternalCode runCommand: '\(command)' sourceSelection: '\(sourceSelection)' targetSelection: '\(targetSelection)' sourcePath: '\(sourcePath)' targetPath: '\(targetPath)'."
     try commandText.write(toFile: pharoFile, atomically: true, encoding: .utf8)
     
